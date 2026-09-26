@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account · minimal</title>
+  <style>
+    /* minimal reset + layout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #eaf4ff;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      padding: 1rem;
+    }
+
+    .register-box {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 1.25rem;
+      padding: 2rem 1.75rem;
+      box-shadow: 0 12px 30px rgba(0, 60, 120, 0.12);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #1769aa;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    /* clean form: no extra wrappers */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #1e293b;
+      letter-spacing: -0.01em;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      border: 1.5px solid #d1dbe8;
+      border-radius: 0.65rem;
+      background: #fbfdff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+      color: #0f172a;
+    }
+
+    input:focus {
+      border-color: #2196f3;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.15);
+    }
+
+    /* helper text (optional) */
+    .helptext {
+      font-size: 0.75rem;
+      color: #5f6c80;
+      margin-top: 0.1rem;
+      line-height: 1.4;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      margin-top: 0.25rem;
+      border: none;
+      border-radius: 0.65rem;
+      background: #1e88e5;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: -0.01em;
+    }
+
+    button:hover {
+      background: #1565c0;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 1.75rem;
+      font-size: 0.9rem;
+      color: #475569;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 1.25rem;
+    }
+
+    .login-link a {
+      color: #1976d2;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* error list — clean & minimal */
+    ul.errorlist {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0.2rem;
+      font-size: 0.8rem;
+      color: #b91c1c;
+    }
+
+    /* smaller screens */
+    @media (max-width: 420px) {
+      .register-box {
+        padding: 1.5rem 1.25rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="register-box">
+    <h1>Create Account</h1>
+    <p class="subtitle">Join in a few seconds</p>
+
+    <!-- Single, clean form — no nested form, no duplicate csrf, no {{ form.as_p }} -->
+    <form method="post" novalidate>
+      <!-- Django CSRF token (server-side template) -->
+      {% csrf_token %}
+
+      <!-- Username field -->
+      <div class="field">
+        <label for="id_username">Username</label>
+        <input type="text" id="id_username" name="username" placeholder="e.g. alex_92" autocomplete="username" required>
+        <span class="helptext">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+      </div>
+
+      <!-- Email field -->
+      <div class="field">
+        <label for="id_email">Email</label>
+        <input type="email" id="id_email" name="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+
+      <!-- Password1 -->
+      <div class="field">
+        <label for="id_password1">Password</label>
+        <input type="password" id="id_password1" name="password1" placeholder="••••••••" autocomplete="new-password" required>
+        <span class="helptext">At least 8 characters, not entirely numeric.</span>
+      </div>
+
+      <!-- Password2 (confirmation) -->
+      <div class="field">
+        <label for="id_password2">Confirm Password</label>
+        <input type="password" id="id_password2" name="password2" placeholder="••••••••" autocomplete="new-password" required>
+      </div>
+
+      <!-- Server-side error placeholder (hidden by default, will be populated by Django) -->
+      {% if form.errors %}
+        <ul class="errorlist">
+          {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="#">Sign in</a>
+    </div>
+  </div>
+
+</body>
+</html>
