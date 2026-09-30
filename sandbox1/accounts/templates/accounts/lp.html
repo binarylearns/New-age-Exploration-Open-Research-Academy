@@ -1,4 +1,5 @@
 {% extends "accounts/sidebar.html" %}
+{% load static %}
 
 {% block title %}
 Lab Practical
@@ -6,9 +7,11 @@ Lab Practical
 
 {% block content %}
 
+    <link rel="stylesheet" href="{% static 'css/01.css' %}">
+
 <div class="chapter-page">
 
-    <h1>Select a Chapter</h1>
+    <h1>Computer Fundamentals</h1>
 
     <p class="chapter-subtitle">
         Choose a chapter to start learning.
@@ -16,41 +19,162 @@ Lab Practical
 
     <div class="chapter-grid">
 
-        <a href="#" class="chapter-card">
+        <!-- CHAPTER 01 : UNLOCKED -->
+        <a href="{% url 'cl1c1' %}" class="chapter-card">
+
             <span class="chapter-number">01</span>
+
             <h2>Computer Basics</h2>
-            <p>Learn the fundamentals of computers.</p>
+
+            <p>
+                Learn the fundamentals of computers.
+            </p>
+
         </a>
 
-        <a href="#" class="chapter-card">
+
+        <!-- CHAPTER 02 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
             <span class="chapter-number">02</span>
-            <h2>Computer Hardware</h2>
-            <p>Learn about computer hardware and devices.</p>
-        </a>
 
-        <a href="#" class="chapter-card">
+            <h2>Operating System / Desktop Skills</h2>
+
+            <p>
+                Learn about computer hardware and devices.
+            </p>
+
+        </div>
+
+
+        <!-- CHAPTER 03 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
             <span class="chapter-number">03</span>
+
             <h2>Operating System</h2>
-            <p>Learn the basics of operating systems.</p>
-        </a>
 
-        <a href="#" class="chapter-card">
+            <p>
+                Learn the basics of operating systems.
+            </p>
+
+        </div>
+
+
+        <!-- CHAPTER 04 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
             <span class="chapter-number">04</span>
-            <h2>Internet</h2>
-            <p>Learn about the internet and networking.</p>
-        </a>
 
-        <a href="#" class="chapter-card">
+            <h2>Drawing + Creativity</h2>
+
+            <p>
+                Learn drawing and creative computer activities.
+            </p>
+
+        </div>
+
+
+        <!-- CHAPTER 05 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
             <span class="chapter-number">05</span>
-            <h2>Files & Folders</h2>
-            <p>Learn how to manage files and folders.</p>
-        </a>
 
-        <a href="#" class="chapter-card">
+            <h2>Files &amp; Folders</h2>
+
+            <p>
+                Learn how to manage files and folders.
+            </p>
+
+        </div>
+
+
+        <!-- CHAPTER 06 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
             <span class="chapter-number">06</span>
+
             <h2>Typing</h2>
-            <p>Improve your keyboard and typing skills.</p>
-        </a>
+
+            <p>
+                Improve your keyboard and typing skills.
+            </p>
+
+        </div>
+
+
+        <!-- CHAPTER 07 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
+            <span class="chapter-number">07</span>
+
+            <h2>Topic 7</h2>
+
+            <p>
+                This is topic 7.
+            </p>
+
+        </div>
+
+
+        <!-- CHAPTER 08 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
+            <span class="chapter-number">08</span>
+
+            <h2>Topic 8</h2>
+
+            <p>
+                This is topic 8.
+            </p>
+
+        </div>
+
+
+        <!-- CHAPTER 09 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
+            <span class="chapter-number">09</span>
+
+            <h2>Topic 9</h2>
+
+            <p>
+                This is topic 9.
+            </p>
+
+        </div>
+
+
+        <!-- CHAPTER 10 : LOCKED -->
+        <div class="chapter-card locked">
+
+            <span class="lock">🔒</span>
+
+            <span class="chapter-number">10</span>
+
+            <h2>Topic 10</h2>
+
+            <p>
+                This is topic 10.
+            </p>
+
+        </div>
 
     </div>
 
