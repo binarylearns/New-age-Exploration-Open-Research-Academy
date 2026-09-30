@@ -43,8 +43,8 @@ def lp(request):
 
 
 @login_required
-def c1c1(request):
-    return render(request, "class1/chapter1.html")
+def f1st(request):
+    return render(request, "accounts/subtopics/1stst.html")
 
 
 def logout_view(request):
