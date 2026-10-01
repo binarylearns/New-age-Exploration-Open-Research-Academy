@@ -4,7 +4,6 @@ from django.db import models
 
 class StudentProfile(models.Model):
     CLASS_CHOICES = [
-
         (1, "Class 1"),
         (2, "Class 2"),
         (3, "Class 3"),
@@ -23,7 +22,9 @@ class StudentProfile(models.Model):
         related_name="student_profile"
     )
 
-    full_name = models.CharField(max_length=150)
+    full_name = models.CharField(
+        max_length=150
+    )
 
     student_class = models.PositiveIntegerField(
         choices=CLASS_CHOICES

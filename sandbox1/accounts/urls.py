@@ -10,11 +10,7 @@ urlpatterns = [
     ), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("profile/", views.profile, name="profile"),
+    path("classes/", views.classes, name="classes"),
     path("lab-practical/", views.lp, name="lab_practical"),
-    # path("f1st/", views.f1st, name="f1st"),
     path("1st/", views.f1st, name="1stst"),
-
-
 ]
-    
-

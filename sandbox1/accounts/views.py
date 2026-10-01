@@ -1,75 +1,69 @@
-from django.contrib.auth import login
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import redirect
 from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 
-from .forms import StudentRegistrationForm
+from .forms import RegisterForm
+from .models import StudentProfile
 
+
+# =========================
+# AUTH
+# =========================
 
 def register(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
+    if request.user.is_authenticated:
+        return redirect('profile')
 
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect("home")
-    else:
-        form = UserCreationForm()
+    form = RegisterForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        user = form.save()
+        StudentProfile.objects.create(
+            user=user,
+            full_name=form.cleaned_data['full_name'],
+            student_class=form.cleaned_data['student_class'],
+            section=form.cleaned_data.get('section', ''),
+            school=form.cleaned_data.get('school', ''),
+        )
+        login(request, user)
+        return redirect('profile')
 
-    return render(
-        request,
-        "accounts/register.html",
-        {"form": form}
-    )
-
-
-def profile(request):
-    return render(request,"accounts/profile.html")    
+    return render(request, 'accounts/register.html', {'form': form})
 
 
-
+# =========================
+# PROFILE
+# =========================
 
 @login_required
-def home(request):
-    return render(request, "accounts/home.html")
+def profile(request):
+    student_profile = getattr(request.user, 'student_profile', None)
+    return render(request, 'accounts/profile.html', {
+        'student_profile': student_profile,
+    })
+
+
+# =========================
+# PLACEHOLDER PAGES
+# (referenced in urls.py — safe to keep for now)
+# =========================
+
+@login_required
+def classes(request):
+    return render(request, 'accounts/classes.html')
 
 
 @login_required
 def lp(request):
-    return render(request, "accounts/lp.html")
+    return render(request, 'accounts/lab_practical.html')
 
 
 @login_required
 def f1st(request):
-    return render(request, "accounts/subtopics/1stst.html")
+    return render(request, 'accounts/1st.html')
 
-
-def logout_view(request):
-    logout(request)
-    return redirect('sandbox1:home')   # cross-app redirect by name
-
-
-def register(request):
-    if request.method == "POST":
-
-        form = StudentRegistrationForm(request.POST)
-
-        if form.is_valid():
-            user = form.save()
-
-            login(request, user)
-
-            return redirect("home")
-
-    else:
-
-        form = StudentRegistrationForm()
-
-    return render(
-        request,
-        "accounts/register.html",
-        {"form": form}
-    )
+@login_required
+def lp(request):
+    student_profile = getattr(request.user, 'student_profile', None)
+    return render(request, 'accounts/lab_practical.html', {
+        'student_profile': student_profile,
+    })

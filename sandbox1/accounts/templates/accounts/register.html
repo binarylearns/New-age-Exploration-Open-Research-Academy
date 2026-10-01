@@ -1,491 +1,85 @@
+{% load static %}
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Create Account · Student</title>
-
-    <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      background: #eaf4ff;
-
-        font-family: system-ui,
-        -apple-system,
-        'Segoe UI',
-        Roboto,
-        Arial,
-        sans-serif;
-
-      padding: 1rem;
-    }
-
-    .register-box {
-      width: 100%;
-        max-width: 420px;
-
-      background: white;
-
-      border-radius: 1.25rem;
-
-      padding: 2rem 1.75rem;
-
-        box-shadow: 0 12px 30px rgba(0, 60, 120, 0.12);
-    }
-
-    h1 {
-      font-size: 1.75rem;
-      font-weight: 600;
-
-      color: #1769aa;
-
-      text-align: center;
-
-      margin-bottom: 0.5rem;
-
-      letter-spacing: -0.02em;
-    }
-
-    .subtitle {
-      text-align: center;
-
-      color: #64748b;
-
-      font-size: 0.9rem;
-
-      margin-bottom: 2rem;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-
-        gap: 1.15rem;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-
-      gap: 0.35rem;
-    }
-
-    label {
-      font-weight: 600;
-
-      font-size: 0.9rem;
-
-      color: #1e293b;
-
-        letter-spacing: -0.01em;
-    }
-
-    input,
-    select {
-      width: 100%;
-
-        padding: 0.75rem 1rem;
-
-        font-size: 0.95rem;
-
-        border: 1.5px solid #d1dbe8;
-
-        border-radius: 0.65rem;
-
-        background: #fbfdff;
-
-        transition: border-color 0.15s,
-        box-shadow 0.15s;
-
-      outline: none;
-
-        color: #0f172a;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #2196f3;
-
-        background: white;
-
-        box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.15);
-    }
-
-    select {
-        cursor: pointer;
-        appearance: auto;
-    }
-
-    .helptext {
-      font-size: 0.75rem;
-
-        color: #5f6c80;
-
-        margin-top: 0.1rem;
-
-        line-height: 1.4;
-    }
-
-    button {
-      width: 100%;
-
-        padding: 0.85rem 1rem;
-
-        margin-top: 0.25rem;
-
-        border: none;
-
-        border-radius: 0.65rem;
-
-        background: #1e88e5;
-
-        color: white;
-
-        font-size: 1rem;
-
-        font-weight: 600;
-
-        cursor: pointer;
-
-        transition: background 0.15s,
-        transform 0.1s;
-
-      letter-spacing: -0.01em;
-    }
-
-    button:hover {
-      background: #1565c0;
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .login-link {
-      text-align: center;
-
-        margin-top: 1.75rem;
-
-        font-size: 0.9rem;
-
-        color: #475569;
-
-        border-top: 1px solid #e2e8f0;
-
-        padding-top: 1.25rem;
-    }
-
-    .login-link a {
-      color: #1976d2;
-
-        font-weight: 600;
-
-        text-decoration: none;
-    }
-
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-
-    ul.errorlist {
-      list-style: none;
-
-        padding-left: 0;
-
-        margin-top: 0.2rem;
-
-        font-size: 0.8rem;
-
-        color: #b91c1c;
-    }
-
-    .form-errors {
-        background: #fff1f2;
-
-        border: 1px solid #fecdd3;
-
-        border-radius: 0.65rem;
-
-        padding: 0.75rem 1rem;
-
-        margin-bottom: 0.25rem;
-    }
-
-    .form-errors ul {
-        margin: 0;
-    }
-
-    @media (max-width: 420px) {
-
-        .register-box {
-        padding: 1.5rem 1.25rem;
-      }
-
-        h1 {
-        font-size: 1.5rem;
-      }
-
-    }
-
-    </style>
-
+  <title>Create Account · The Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="min-h-screen flex items-center justify-center bg-gray-50 p-4 antialiased">
 
-<body>
+  <div class="w-full max-w-sm">
 
-  <div class="register-box">
-
-
-      <h1>Create Account</h1>
-
-      <p class="subtitle">
-          Create your student account
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <div class="w-2 h-2 rounded-full bg-black mx-auto mb-4"></div>
+      <h1 class="text-xl font-semibold tracking-tight text-black">
+        Create Account
+      </h1>
+      <p class="text-sm text-gray-500 mt-1">
+        Create your student account
       </p>
+    </div>
 
+    <!-- Form -->
+    <form method="post" novalidate class="space-y-6">
+      {% csrf_token %}
 
-      <form method="post" novalidate>
+      {% if form.non_field_errors %}
+        <div class="border border-gray-300 p-3 text-sm text-black">
+          <ul class="list-none space-y-0.5">
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
 
-          {% csrf_token %}
+      {% for field in form %}
+        <div>
+          <label for="{{ field.id_for_label }}"
+                 class="block text-xs uppercase tracking-wide text-gray-500 mb-1.5">
+            {{ field.label }}
+          </label>
 
+          <div class="[&_input]:w-full [&_input]:border-0 [&_input]:border-b [&_input]:border-gray-300 [&_input]:bg-transparent [&_input]:py-2 [&_input]:text-sm [&_input]:text-black [&_input]:focus:outline-none [&_input]:focus:border-black [&_input]:transition-colors">
+            {{ field }}
+          </div>
 
-          <!-- General form errors -->
-
-          {% if form.non_field_errors %}
-
-              <div class="form-errors">
-
-                  <ul class="errorlist">
-
-                      {% for error in form.non_field_errors %}
-
-                          <li>{{ error }}</li>
-
-                      {% endfor %}
-
-                  </ul>
-
-              </div>
-
+          {% if field.help_text %}
+            <p class="text-xs text-gray-400 mt-1.5 leading-snug">
+              {{ field.help_text|safe }}
+            </p>
           {% endif %}
 
-
-          <!-- Username -->
-
-          <div class="field">
-
-              <label for="{{ form.username.id_for_label }}">
-                  Username
-              </label>
-
-              {{ form.username }}
-
-              <span class="helptext">
-      Choose a username you will use to log in.
-    </span>
-
-              {% if form.username.errors %}
-
-                  <ul class="errorlist">
-
-                      {% for error in form.username.errors %}
-
-                          <li>{{ error }}</li>
-
-                      {% endfor %}
-
-                  </ul>
-
-              {% endif %}
-
-          </div>
-
-
-          <!-- Full Name -->
-
-          <div class="field">
-
-              <label for="{{ form.full_name.id_for_label }}">
-                  Full Name
-              </label>
-
-              {{ form.full_name }}
-
-              <span class="helptext">
-      Enter your real name.
-    </span>
-
-              {% if form.full_name.errors %}
-
-                  <ul class="errorlist">
-
-                      {% for error in form.full_name.errors %}
-
-                          <li>{{ error }}</li>
-
-                      {% endfor %}
-
-                  </ul>
-
-              {% endif %}
-
-          </div>
-
-
-          <!-- Email -->
-
-          <div class="field">
-
-              <label for="{{ form.email.id_for_label }}">
-                  Email
-              </label>
-
-              {{ form.email }}
-
-              <span class="helptext">
-      Optional.
-    </span>
-
-              {% if form.email.errors %}
-
-                  <ul class="errorlist">
-
-                      {% for error in form.email.errors %}
-
-                          <li>{{ error }}</li>
-
-                      {% endfor %}
-
-                  </ul>
-
-              {% endif %}
-
-          </div>
-
-
-          <!-- Class -->
-
-          <div class="field">
-
-              <label for="{{ form.student_class.id_for_label }}">
-                  Select Your Class
-              </label>
-
-              {{ form.student_class }}
-
-              <span class="helptext">
-      Choose the class you are currently studying in.
-    </span>
-
-              {% if form.student_class.errors %}
-
-                  <ul class="errorlist">
-
-                      {% for error in form.student_class.errors %}
-
-                          <li>{{ error }}</li>
-
-                      {% endfor %}
-
-                  </ul>
-
-              {% endif %}
-
-          </div>
-
-
-          <!-- Password -->
-
-          <div class="field">
-
-              <label for="{{ form.password1.id_for_label }}">
-                  Password
-              </label>
-
-              {{ form.password1 }}
-
-              <span class="helptext">
-      Use at least 8 characters.
-    </span>
-
-              {% if form.password1.errors %}
-
-                  <ul class="errorlist">
-
-                      {% for error in form.password1.errors %}
-
-                          <li>{{ error }}</li>
-
-                      {% endfor %}
-
-                  </ul>
-
-              {% endif %}
-
-          </div>
-
-
-          <!-- Confirm Password -->
-
-          <div class="field">
-
-              <label for="{{ form.password2.id_for_label }}">
-                  Confirm Password
-              </label>
-
-              {{ form.password2 }}
-
-              {% if form.password2.errors %}
-
-                  <ul class="errorlist">
-
-                      {% for error in form.password2.errors %}
-
-                          <li>{{ error }}</li>
-
-                      {% endfor %}
-
-                  </ul>
-
-              {% endif %}
-
-          </div>
-
-
-          <!-- Register -->
-
-          <button type="submit">
-              Create Student Account
-          </button>
-
-      </form>
-
-
-      <div class="login-link">
-
-          Already have an account?
-
-          <a href="{% url 'login' %}">
-              Sign in
-          </a>
-
-      </div>
-
+          {% if field.errors %}
+            <ul class="list-none text-xs text-black mt-1.5 space-y-0.5">
+              {% for error in field.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <button type="submit"
+              class="w-full py-3 bg-black text-white text-sm font-medium rounded-full
+                     hover:bg-gray-800 active:scale-[0.99] transition">
+        Create Account
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="text-center text-sm text-gray-500 mt-8">
+      Already have an account?
+      <a href="{% url 'login' %}"
+         class="text-black font-medium hover:underline underline-offset-4">
+        Sign in
+      </a>
+    </div>
 
   </div>
 
 </body>
-
 </html>

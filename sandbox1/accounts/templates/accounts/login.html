@@ -3,174 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .login-card {
-      background: #fff;
-      padding: 40px 36px;
-      border-radius: 16px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      max-width: 400px;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .login-card h1 {
-      text-align: center;
-      color: #333;
-      font-size: 26px;
-      margin-bottom: 8px;
-    }
-
-    .login-card .subtitle {
-      text-align: center;
-      color: #888;
-      font-size: 14px;
-      margin-bottom: 28px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      background: #fafafa;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: #667eea;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-    }
-
-    .errorlist {
-      list-style: none;
-      color: #e74c3c;
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
-    .non-field-errors {
-      background: #fdecea;
-      color: #c0392b;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-bottom: 16px;
-      list-style: none;
-    }
-
-    .btn-login {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.2s;
-      margin-top: 6px;
-    }
-
-    .btn-login:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-    }
-
-    .btn-login:active {
-      transform: translateY(0);
-    }
-
-    .footer-link {
-      text-align: center;
-      margin-top: 22px;
-      font-size: 13px;
-      color: #888;
-    }
-
-    .footer-link a {
-      color: #667eea;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .footer-link a:hover { text-decoration: underline; }
-  </style>
+  <title>Login · The Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="login-card">
-    <h1>Welcome Back</h1>
-    <p class="subtitle">Log in to continue to your account</p>
+<body class="min-h-screen flex items-center justify-center bg-gray-50 p-4 antialiased">
 
-    <form method="post" novalidate>
+  <div class="w-full max-w-sm">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <div class="w-2 h-2 rounded-full bg-black mx-auto mb-4"></div>
+      <h1 class="text-xl font-semibold tracking-tight text-black">
+        Welcome back
+      </h1>
+      <p class="text-sm text-gray-500 mt-1">
+        Log in to continue
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form method="post" novalidate class="space-y-6">
       {% csrf_token %}
 
       {% if form.non_field_errors %}
-        <ul class="non-field-errors">
-          {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
+        <div class="border border-gray-300 p-3 text-sm text-black">
+          <ul class="list-none space-y-0.5">
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
       {% endif %}
 
-      <div class="form-group">
-        <label for="{{ form.username.id_for_label }}">Username</label>
-        {{ form.username }}
+      <!-- Username -->
+      <div>
+        <label for="{{ form.username.id_for_label }}"
+               class="block text-xs uppercase tracking-wide text-gray-500 mb-1.5">
+          Username
+        </label>
+        <div class="[&_input]:w-full [&_input]:border-0 [&_input]:border-b [&_input]:border-gray-300 [&_input]:bg-transparent [&_input]:py-2 [&_input]:text-sm [&_input]:text-black [&_input]:focus:outline-none [&_input]:focus:border-black [&_input]:transition-colors">
+          {{ form.username }}
+        </div>
         {% if form.username.errors %}
-          <ul class="errorlist">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          <ul class="list-none text-xs text-black mt-1.5 space-y-0.5">
+            {% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}
+          </ul>
         {% endif %}
       </div>
 
-      <div class="form-group">
-        <label for="{{ form.password.id_for_label }}">Password</label>
-        {{ form.password }}
+      <!-- Password -->
+      <div>
+        <label for="{{ form.password.id_for_label }}"
+               class="block text-xs uppercase tracking-wide text-gray-500 mb-1.5">
+          Password
+        </label>
+        <div class="[&_input]:w-full [&_input]:border-0 [&_input]:border-b [&_input]:border-gray-300 [&_input]:bg-transparent [&_input]:py-2 [&_input]:text-sm [&_input]:text-black [&_input]:focus:outline-none [&_input]:focus:border-black [&_input]:transition-colors">
+          {{ form.password }}
+        </div>
         {% if form.password.errors %}
-          <ul class="errorlist">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          <ul class="list-none text-xs text-black mt-1.5 space-y-0.5">
+            {% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}
+          </ul>
         {% endif %}
       </div>
 
       <input type="hidden" name="next" value="{{ next }}">
 
-      <button type="submit" class="btn-login">Log in</button>
+      <button type="submit"
+              class="w-full py-3 bg-black text-white text-sm font-medium rounded-full
+                     hover:bg-gray-800 active:scale-[0.99] transition">
+        Log in
+      </button>
     </form>
 
-    <p class="footer-link">
-      Don't have an account? <a href="{% url 'register' %}">Sign up</a>
-    </p>
+    <!-- Footer -->
+    <div class="text-center text-sm text-gray-500 mt-8">
+      Don't have an account?
+      <a href="{% url 'register' %}"
+         class="text-black font-medium hover:underline underline-offset-4">
+        Sign up
+      </a>
+    </div>
+
   </div>
+
 </body>
 </html>

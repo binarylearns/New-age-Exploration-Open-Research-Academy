@@ -1,898 +1,241 @@
-
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>The Lab Program</title>
-
-    <style>
-        /* =========================
-           RESET
-           ========================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --black: #111111;
-            --dark: #1c1c1c;
-            --gray: #666666;
-            --light: #f5f5f5;
-            --white: #ffffff;
-            --border: #e5e5e5;
-            --accent: #111111;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            color: var(--black);
-            background: var(--white);
-            line-height: 1.6;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            width: min(1120px, 90%);
-            margin: auto;
-        }
-
-
-        /* =========================
-           NAVBAR
-           ========================= */
-
-        .navbar {
-            height: 76px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        .nav-container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 25px;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-        .logo span {
-            font-weight: 400;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 9px 18px;
-            border-radius: 7px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.2s ease;
-        }
-
-        .btn-login {
-            border: 1px solid var(--border);
-        }
-
-        .btn-register {
-            background: var(--black);
-            color: var(--white);
-        }
-
-        .btn:hover {
-            transform: translateY(-1px);
-        }
-
-
-        /* =========================
-           HERO
-           ========================= */
-
-        .hero {
-            padding: 100px 0 120px;
-            overflow: hidden;
-        }
-
-        .hero-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 70px;
-            align-items: center;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--gray);
-            margin-bottom: 25px;
-        }
-
-        .hero h1 {
-            max-width: 600px;
-            font-size: clamp(45px, 6vw, 72px);
-            line-height: 0.98;
-            letter-spacing: -4px;
-            margin-bottom: 25px;
-        }
-
-        .hero h1 span {
-            display: block;
-            color: var(--gray);
-        }
-
-        .hero-description {
-            max-width: 560px;
-            color: var(--gray);
-            font-size: 17px;
-            line-height: 1.8;
-            margin-bottom: 32px;
-        }
-
-        .hero-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .hero-button {
-            padding: 13px 20px;
-            border-radius: 7px;
-            font-size: 14px;
-            font-weight: 700;
-            transition: 0.2s ease;
-        }
-
-        .primary-button {
-            background: var(--black);
-            color: var(--white);
-        }
-
-        .secondary-button {
-            border: 1px solid var(--border);
-            color: var(--dark);
-        }
-
-        .hero-button:hover {
-            transform: translateY(-2px);
-        }
-
-
-        /* =========================
-           HERO VISUAL
-           ========================= */
-
-        .hero-visual {
-            display: flex;
-            justify-content: center;
-        }
-
-        .computer-card {
-            width: 100%;
-            max-width: 500px;
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.08);
-        }
-
-        .window-header {
-            height: 45px;
-            padding: 0 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .window-dots {
-            display: flex;
-            gap: 6px;
-        }
-
-        .window-dots span {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ccc;
-        }
-
-        .window-title {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .computer-screen {
-            min-height: 330px;
-            display: grid;
-            grid-template-columns: 70px 1fr;
-        }
-
-        .screen-sidebar {
-            padding: 18px 12px;
-            background: #fafafa;
-            border-right: 1px solid var(--border);
-        }
-
-        .side-logo {
-            width: 38px;
-            height: 38px;
-            margin: 0 auto 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            background: var(--black);
-            color: var(--white);
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .side-line {
-            width: 32px;
-            height: 7px;
-            margin: 13px auto;
-            border-radius: 5px;
-            background: #ddd;
-        }
-
-        .side-line.active {
-            background: var(--black);
-        }
-
-        .screen-content {
-            padding: 30px;
-        }
-
-        .welcome-small {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: var(--gray);
-            margin-bottom: 7px;
-        }
-
-        .screen-content h3 {
-            font-size: 22px;
-            margin-bottom: 2px;
-        }
-
-        .screen-content > p {
-            color: var(--gray);
-            font-size: 13px;
-            margin-bottom: 22px;
-        }
-
-        .lesson-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .lesson-card {
-            padding: 15px;
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            transition: 0.2s ease;
-        }
-
-        .lesson-card:hover {
-            transform: translateY(-3px);
-            border-color: #aaa;
-        }
-
-        .lesson-icon {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 9px;
-            border-radius: 7px;
-            background: var(--light);
-            font-size: 15px;
-        }
-
-        .lesson-card strong {
-            display: block;
-            font-size: 13px;
-        }
-
-        .lesson-card small {
-            color: var(--gray);
-            font-size: 10px;
-        }
-
-
-        /* =========================
-           FEATURES
-           ========================= */
-
-        .features {
-            padding: 100px 0;
-            background: #fafafa;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section-heading {
-            max-width: 650px;
-            margin-bottom: 55px;
-        }
-
-        .section-label {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--gray);
-            margin-bottom: 12px;
-        }
-
-        .section-heading h2 {
-            font-size: 42px;
-            line-height: 1.1;
-            letter-spacing: -2px;
-            margin-bottom: 15px;
-        }
-
-        .section-heading h2 span {
-            color: var(--gray);
-        }
-
-        .section-heading p {
-            color: var(--gray);
-            max-width: 550px;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .feature-card {
-            padding: 30px;
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-        }
-
-        .feature-icon {
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 22px;
-            border-radius: 9px;
-            background: var(--light);
-            font-size: 20px;
-        }
-
-        .feature-card h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .feature-card p {
-            color: var(--gray);
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-
-        /* =========================
-           CTA
-           ========================= */
-
-        .cta-section {
-            padding: 100px 0;
-        }
-
-        .cta-card {
-            padding: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 30px;
-            background: var(--black);
-            color: var(--white);
-            border-radius: 15px;
-        }
-
-        .cta-label {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            opacity: 0.6;
-            margin-bottom: 10px;
-        }
-
-        .cta-card h2 {
-            font-size: 38px;
-            letter-spacing: -1.5px;
-            margin-bottom: 8px;
-        }
-
-        .cta-card p {
-            color: #aaa;
-            font-size: 14px;
-        }
-
-        .cta-button {
-            flex-shrink: 0;
-            padding: 13px 20px;
-            border-radius: 7px;
-            background: var(--white);
-            color: var(--black);
-            font-size: 14px;
-            font-weight: 700;
-            transition: 0.2s ease;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-        }
-
-
-        /* =========================
-           FOOTER
-           ========================= */
-
-        .footer {
-            padding: 45px 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .footer-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .footer-logo {
-            font-size: 18px;
-            font-weight: 800;
-        }
-
-        .footer-logo span {
-            font-weight: 400;
-        }
-
-        .footer p {
-            color: var(--gray);
-            font-size: 13px;
-        }
-
-        .footer-copy {
-            color: #999;
-            font-size: 12px;
-        }
-
-
-        /* =========================
-           MOBILE
-           ========================= */
-
-        @media (max-width: 850px) {
-
-            .hero {
-                padding: 70px 0 80px;
-            }
-
-            .hero-container {
-                grid-template-columns: 1fr;
-                gap: 55px;
-            }
-
-            .hero h1 {
-                font-size: 52px;
-            }
-
-            .hero-visual {
-                justify-content: flex-start;
-            }
-
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-card {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 40px 30px;
-            }
-
-            .footer-container {
-                flex-direction: column;
-                align-items: flex-start;
+    <title>The Lab · Learn Computers by Doing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50:  '#ffebee',
+                            100: '#ffcdd2',
+                            500: '#f44336',
+                            600: '#e53935',
+                            700: '#d32f2f',
+                            800: '#c62828',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'system-ui', 'sans-serif'],
+                    }
+                }
             }
         }
-
-
-        @media (max-width: 500px) {
-
-            .navbar {
-                height: 68px;
-            }
-
-            .logo {
-                font-size: 21px;
-            }
-
-            .nav-buttons {
-                gap: 5px;
-            }
-
-            .btn {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-
-            .hero h1 {
-                font-size: 43px;
-                letter-spacing: -2.5px;
-            }
-
-            .hero-description {
-                font-size: 15px;
-            }
-
-            .hero-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .hero-button {
-                text-align: center;
-            }
-
-            .computer-screen {
-                grid-template-columns: 50px 1fr;
-            }
-
-            .screen-content {
-                padding: 20px 15px;
-            }
-
-            .screen-content h3 {
-                font-size: 18px;
-            }
-
-            .lesson-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-heading h2 {
-                font-size: 34px;
-            }
-
-            .cta-card h2 {
-                font-size: 32px;
-            }
-        }
-    </style>
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
 
-<body>
-
+<body class="font-sans text-gray-900 bg-white antialiased">
 
 <!-- =========================
      NAVBAR
      ========================= -->
+<nav class="sticky top-0 z-50 h-16 border-b border-gray-200 bg-white/85 backdrop-blur">
+    <div class="max-w-6xl mx-auto h-full px-4 flex items-center justify-between">
 
-<nav class="navbar">
-
-    <div class="container nav-container">
-
-        <a href="#" class="logo">
-            The<span>Lab</span>
+        <a href="/" class="flex items-center gap-2 text-xl font-extrabold tracking-tight">
+            <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+            The<span class="font-normal text-gray-500">Lab</span>
         </a>
 
-        <div class="nav-buttons">
-
-            <a href="{% url 'login' %}" class="btn btn-login">
+        <div class="flex items-center gap-2">
+            <a href="{% url 'login' %}"
+               class="px-4 py-2 text-sm font-semibold text-gray-700 rounded-full hover:bg-gray-100 transition">
                 Login
             </a>
-
-            <a href="{% url 'register' %}" class="btn btn-register">
+            <a href="{% url 'register' %}"
+               class="px-4 py-2 text-sm font-semibold text-white bg-brand-600 rounded-full shadow-sm shadow-brand-600/30 hover:bg-brand-700 transition">
                 Register
             </a>
-
         </div>
 
     </div>
-
 </nav>
 
+
+<main>
 
 <!-- =========================
      HERO
      ========================= -->
-
-<main>
-
-    <section class="hero">
-
-        <div class="container hero-container">
-
-            <div class="hero-content">
-
-                <div class="hero-badge">
-                    💻 Learn • Explore • Create
-                </div>
-
-                <h1>
-                    Learn Computers
-                    <span>By Doing.</span>
-                </h1>
-
-                <p class="hero-description">
-                    The Lab is a practical computer learning platform
-                    where students learn technology through activities,
-                    experiments, challenges, and real-world practice.
-                </p>
-
-                <div class="hero-actions">
-
-                    <a href="{% url 'register' %}"
-                       class="hero-button primary-button">
-                        Get Started →
-                    </a>
-
-                    <a href="{% url 'login' %}"
-                       class="hero-button secondary-button">
-                        I Already Have an Account
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUCT PREVIEW -->
-
-            <div class="hero-visual">
-
-                <div class="computer-card">
-
-                    <div class="window-header">
-
-                        <div class="window-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-
-                        <div class="window-title">
-                            The Lab
-                        </div>
-
-                    </div>
-
-
-                    <div class="computer-screen">
-
-                        <div class="screen-sidebar">
-
-                            <div class="side-logo">
-                                TL
-                            </div>
-
-                            <div class="side-line active"></div>
-                            <div class="side-line"></div>
-                            <div class="side-line"></div>
-                            <div class="side-line"></div>
-
-                        </div>
-
-
-                        <div class="screen-content">
-
-                            <div class="welcome-small">
-                                STUDENT LAB
-                            </div>
-
-                            <h3>
-                                Welcome back 👋
-                            </h3>
-
-                            <p>
-                                Ready to explore?
-                            </p>
-
-
-                            <div class="lesson-grid">
-
-                                <div class="lesson-card">
-                                    <div class="lesson-icon">⌨</div>
-                                    <strong>Keyboard</strong>
-                                    <small>Learn & Practice</small>
-                                </div>
-
-                                <div class="lesson-card">
-                                    <div class="lesson-icon">&lt;/&gt;</div>
-                                    <strong>Coding</strong>
-                                    <small>Build Something</small>
-                                </div>
-
-                                <div class="lesson-card">
-                                    <div class="lesson-icon">◎</div>
-                                    <strong>Internet</strong>
-                                    <small>Explore Safely</small>
-                                </div>
-
-                                <div class="lesson-card">
-                                    <div class="lesson-icon">◇</div>
-                                    <strong>Challenges</strong>
-                                    <small>Test Yourself</small>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         FEATURES
-         ========================= -->
-
-    <section class="features">
-
-        <div class="container">
-
-            <div class="section-heading">
-
-                <div class="section-label">
-                    WHY THE LAB?
-                </div>
-
-                <h2>
-                    Learning should be
-                    <span>hands-on.</span>
-                </h2>
-
-                <p>
-                    Students shouldn't only read about computers.
-                    They should interact with them, experiment,
-                    solve problems, and build things.
-                </p>
-
-            </div>
-
-
-            <div class="feature-grid">
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        💻
-                    </div>
-
-                    <h3>
-                        Practical Learning
-                    </h3>
-
-                    <p>
-                        Learn computer concepts through activities
-                        instead of simply memorizing definitions.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🧠
-                    </div>
-
-                    <h3>
-                        Learn by Exploring
-                    </h3>
-
-                    <p>
-                        Experiment, make mistakes, solve problems,
-                        and discover how technology works.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🚀
-                    </div>
-
-                    <h3>
-                        Build Real Skills
-                    </h3>
-
-                    <p>
-                        Develop digital skills that students can
-                        actually use outside the classroom.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         CTA
-         ========================= -->
-
-    <section class="cta-section">
-
-        <div class="container">
-
-            <div class="cta-card">
-
-                <div>
-
-                    <div class="cta-label">
-                        READY TO START?
-                    </div>
-
-                    <h2>
-                        Enter the Lab.
-                    </h2>
-
-                    <p>
-                        Create your account and start exploring
-                        practical computer learning.
-                    </p>
-
-                </div>
-
-                <a href="{% url 'register' %}" class="cta-button">
-                    Create Account →
+<section class="py-24 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
+
+        <!-- Content -->
+        <div>
+            <span class="inline-block px-3 py-1 mb-6 text-xs font-semibold text-gray-600 border border-gray-200 rounded-full">
+                💻 Learn • Explore • Create
+            </span>
+
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-6">
+                Learn Computers
+                <span class="block text-gray-400">By Doing.</span>
+            </h1>
+
+            <p class="max-w-lg text-gray-500 text-lg leading-relaxed mb-8">
+                The Lab is a practical computer learning platform where students
+                learn technology through activities, experiments, challenges,
+                and real-world practice.
+            </p>
+
+            <div class="flex flex-wrap gap-3">
+                <a href="{% url 'register' %}"
+                   class="px-6 py-3 text-sm font-semibold text-white bg-brand-600 rounded-full shadow-md shadow-brand-600/30 hover:bg-brand-700 hover:-translate-y-0.5 transition">
+                    Get Started →
                 </a>
+                <a href="{% url 'login' %}"
+                   class="px-6 py-3 text-sm font-semibold text-gray-800 border border-gray-200 rounded-full hover:border-gray-400 hover:-translate-y-0.5 transition">
+                    I Already Have an Account
+                </a>
+            </div>
+        </div>
 
+        <!-- Preview -->
+        <div class="flex justify-center">
+            <div class="w-full max-w-md bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-2xl shadow-gray-900/10">
+
+                <!-- Window bar -->
+                <div class="h-10 px-4 flex items-center justify-between border-b border-gray-200 bg-gray-50">
+                    <div class="flex gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+                    </div>
+                    <span class="text-[11px] text-gray-500">The Lab</span>
+                </div>
+
+                <!-- Screen -->
+                <div class="grid grid-cols-[60px_1fr] min-h-[320px]">
+
+                    <!-- Sidebar -->
+                    <div class="py-5 px-2 bg-gray-50 border-r border-gray-200">
+                        <div class="w-9 h-9 mx-auto mb-6 rounded-lg bg-brand-600 text-white flex items-center justify-center text-[11px] font-bold">
+                            TL
+                        </div>
+                        <div class="w-7 h-1.5 mx-auto my-3 rounded-full bg-brand-600"></div>
+                        <div class="w-7 h-1.5 mx-auto my-3 rounded-full bg-gray-300"></div>
+                        <div class="w-7 h-1.5 mx-auto my-3 rounded-full bg-gray-300"></div>
+                        <div class="w-7 h-1.5 mx-auto my-3 rounded-full bg-gray-300"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6">
+                        <p class="text-[10px] font-bold tracking-widest text-gray-400 mb-1">STUDENT LAB</p>
+                        <h3 class="text-xl font-bold mb-1">Welcome back 👋</h3>
+                        <p class="text-sm text-gray-500 mb-5">Ready to explore?</p>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            {% for icon, title, sub in lesson_cards %}
+                            {% endfor %}
+                            <div class="p-3 border border-gray-200 rounded-xl hover:-translate-y-0.5 hover:border-gray-400 transition">
+                                <div class="w-8 h-8 mb-2 rounded-lg bg-gray-100 flex items-center justify-center text-sm">⌨</div>
+                                <strong class="block text-xs font-bold">Keyboard</strong>
+                                <small class="text-[10px] text-gray-500">Learn & Practice</small>
+                            </div>
+                            <div class="p-3 border border-gray-200 rounded-xl hover:-translate-y-0.5 hover:border-gray-400 transition">
+                                <div class="w-8 h-8 mb-2 rounded-lg bg-gray-100 flex items-center justify-center text-sm">&lt;/&gt;</div>
+                                <strong class="block text-xs font-bold">Coding</strong>
+                                <small class="text-[10px] text-gray-500">Build Something</small>
+                            </div>
+                            <div class="p-3 border border-gray-200 rounded-xl hover:-translate-y-0.5 hover:border-gray-400 transition">
+                                <div class="w-8 h-8 mb-2 rounded-lg bg-gray-100 flex items-center justify-center text-sm">◎</div>
+                                <strong class="block text-xs font-bold">Internet</strong>
+                                <small class="text-[10px] text-gray-500">Explore Safely</small>
+                            </div>
+                            <div class="p-3 border border-gray-200 rounded-xl hover:-translate-y-0.5 hover:border-gray-400 transition">
+                                <div class="w-8 h-8 mb-2 rounded-lg bg-gray-100 flex items-center justify-center text-sm">◇</div>
+                                <strong class="block text-xs font-bold">Challenges</strong>
+                                <small class="text-[10px] text-gray-500">Test Yourself</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =========================
+     FEATURES
+     ========================= -->
+<section class="py-24 bg-gray-50 border-y border-gray-200">
+    <div class="max-w-6xl mx-auto px-4">
+
+        <div class="max-w-2xl mb-14">
+            <p class="text-[11px] font-bold tracking-widest text-brand-600 mb-3">WHY THE LAB?</p>
+            <h2 class="text-4xl sm:text-5xl font-black tracking-tight leading-[1.1] mb-4">
+                Learning should be
+                <span class="text-gray-400">hands-on.</span>
+            </h2>
+            <p class="text-gray-500 max-w-lg">
+                Students shouldn't only read about computers.
+                They should interact with them, experiment,
+                solve problems, and build things.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4">
+
+            <div class="p-7 bg-white border border-gray-200 rounded-2xl hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-900/5 transition">
+                <div class="w-11 h-11 mb-5 rounded-xl bg-brand-50 flex items-center justify-center text-xl">💻</div>
+                <h3 class="text-lg font-bold mb-2">Practical Learning</h3>
+                <p class="text-sm text-gray-500 leading-relaxed">
+                    Learn computer concepts through activities instead of simply memorizing definitions.
+                </p>
+            </div>
+
+            <div class="p-7 bg-white border border-gray-200 rounded-2xl hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-900/5 transition">
+                <div class="w-11 h-11 mb-5 rounded-xl bg-brand-50 flex items-center justify-center text-xl">🧠</div>
+                <h3 class="text-lg font-bold mb-2">Learn by Exploring</h3>
+                <p class="text-sm text-gray-500 leading-relaxed">
+                    Experiment, make mistakes, solve problems, and discover how technology works.
+                </p>
+            </div>
+
+            <div class="p-7 bg-white border border-gray-200 rounded-2xl hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-900/5 transition">
+                <div class="w-11 h-11 mb-5 rounded-xl bg-brand-50 flex items-center justify-center text-xl">🚀</div>
+                <h3 class="text-lg font-bold mb-2">Build Real Skills</h3>
+                <p class="text-sm text-gray-500 leading-relaxed">
+                    Develop digital skills that students can actually use outside the classroom.
+                </p>
             </div>
 
         </div>
+    </div>
+</section>
 
-    </section>
+
+<!-- =========================
+     CTA
+     ========================= -->
+<section class="py-24">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="p-12 sm:p-14 rounded-3xl bg-brand-600 text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 shadow-2xl shadow-brand-600/30">
+
+            <div>
+                <p class="text-[11px] font-bold tracking-widest text-white/60 mb-3">READY TO START?</p>
+                <h2 class="text-4xl sm:text-5xl font-black tracking-tight mb-3">Enter the Lab.</h2>
+                <p class="text-white/80 text-sm max-w-md">
+                    Create your account and start exploring practical computer learning.
+                </p>
+            </div>
+
+            <a href="{% url 'register' %}"
+               class="shrink-0 self-start lg:self-auto px-7 py-3.5 bg-white text-brand-700 font-bold text-sm rounded-full hover:-translate-y-0.5 hover:shadow-xl transition">
+                Create Account →
+            </a>
+
+        </div>
+    </div>
+</section>
 
 </main>
 
@@ -900,27 +243,20 @@
 <!-- =========================
      FOOTER
      ========================= -->
+<footer class="py-10 border-t border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
 
-<footer class="footer">
-
-    <div class="container footer-container">
-
-        <div class="footer-logo">
-            The<span>Lab</span>
+        <div class="flex items-center gap-2 text-base font-extrabold">
+            <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+            The<span class="font-normal text-gray-500">Lab</span>
         </div>
 
-        <p>
-            Practical computer learning for students.
-        </p>
+        <p class="text-sm text-gray-500">Practical computer learning for students.</p>
 
-        <div class="footer-copy">
-            © 2026 The Lab Program. All rights reserved.
-        </div>
+        <p class="text-xs text-gray-400">© 2026 The Lab Program.</p>
 
     </div>
-
 </footer>
 
 </body>
 </html>
-```
