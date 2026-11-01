@@ -2,15 +2,14 @@ Nexora	A next-generation learning environment.
 
 ### Offline-First Interactive Learning & Cybersecurity Education Platform
 
-<p align="center">
+
   **Learn by Doing. Explore by Playing. Grow by Practicing.**
-</p>
+
 
 An offline-first, sandbox-based educational platform designed to make practical learning more accessible, interactive, and engaging for school, college, and university students.
 
 The platform aims to bring together hands-on cybersecurity education, interactive learning modules, educational games, digital literacy, and classroom activity monitoring in one unified environment.
 
----
 
 ## About the Project
 
