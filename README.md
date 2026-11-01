@@ -1,4 +1,4 @@
-# Project Name
+Nexora	A next-generation learning environment.
 
 ### Offline-First Interactive Learning & Cybersecurity Education Platform
 
