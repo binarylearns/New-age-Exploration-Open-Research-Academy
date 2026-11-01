@@ -1,14 +1,20 @@
-Nexora:	A next-generation learning environment.
+## A Personal Side Project
 
-### Offline-First Interactive Learning & Cybersecurity Education Platform
+Nexora is an independent project that I'm exploring and building in my free time.
+
+I'm experimenting with modern development workflows, AI-assisted coding (often called *vibe coding*), and tools that make it possible to turn ideas into working software more quickly.
+
+With today's development tools, building an initial prototype of an idea like this is more approachable than ever. However, turning that prototype into a reliable, secure, fully functional educational platform is a different challenge.
+
+I'm not presenting Nexora as a finished product, a commercial platform, or a proven educational solution. It's an ongoing personal experiment driven by curiosity, learning, and the desire to explore what's possible.
+
+The concept, architecture, and features may change as development progresses. Some ideas may work differently in practice, some may take longer to implement, and others may evolve into something entirely different.
 
 
-  **Learn by Doing. Explore by Playing. Grow by Practicing.**
 
+**No exaggerated claims, no promises of an established product — just an idea, a willingness to learn, and an attempt to build something useful.**
 
-An offline-first, sandbox-based educational platform designed to make practical learning more accessible, interactive, and engaging for school, college, and university students.
-
-The platform aims to bring together hands-on cybersecurity education, interactive learning modules, educational games, digital literacy, and classroom activity monitoring in one unified environment.
+Nexora is a work in progress, and this repository will reflect that journey.
 
 
 ## About the Project
@@ -35,6 +41,19 @@ The long-term vision is to create an affordable, extensible, and institution-fri
 - **Extensibility:** Build a foundation that can accommodate additional educational modules and technologies.
 
 ---
+
+
+## Project Status
+
+<badge>Early Experiment / Work in Progress</badge>
+
+Nexora is currently an independent side project under exploration and development.
+
+I'm building and experimenting with the concept in my free time, using Django, Python, Tailwind CSS, and AI-assisted development tools.
+
+The initial goal is to develop a functional prototype and gradually evaluate the feasibility of its proposed features.
+
+This is an experimental project, not a production-ready educational platform. Features, architecture, and implementation plans are subject to change as development progresses.
 
 ## Key Features & Planned Modules
 
