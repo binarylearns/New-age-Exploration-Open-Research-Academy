@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -7,27 +8,32 @@ from .models import StudentProfile
 
 
 # =========================
-# AUTH
+# REGISTER
 # =========================
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect('profile')
+        return redirect("profile")
 
     form = RegisterForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
+
+    if request.method == "POST" and form.is_valid():
         user = form.save()
+
         StudentProfile.objects.create(
             user=user,
-            full_name=form.cleaned_data['full_name'],
-            student_class=form.cleaned_data['student_class'],
-            section=form.cleaned_data.get('section', ''),
-            school=form.cleaned_data.get('school', ''),
+            full_name=form.cleaned_data["full_name"],
+            student_class=form.cleaned_data["student_class"],
+            section=form.cleaned_data.get("section", ""),
+            school=form.cleaned_data.get("school", ""),
         )
-        login(request, user)
-        return redirect('profile')
 
-    return render(request, 'accounts/register.html', {'form': form})
+        login(request, user)
+        return redirect("profile")
+
+    return render(request, "accounts/register.html", {
+        "form": form,
+    })
 
 
 # =========================
@@ -36,38 +42,78 @@ def register(request):
 
 @login_required
 def profile(request):
-    student_profile = getattr(request.user, 'student_profile', None)
-    return render(request, 'accounts/profile.html', {
-        'student_profile': student_profile,
+    student_profile = getattr(
+        request.user, "student_profile", None
+    )
+
+    return render(request, "accounts/profile.html", {
+        "student_profile": student_profile,
     })
 
 
 # =========================
-# PLACEHOLDER PAGES
-# (referenced in urls.py — safe to keep for now)
+# CLASSES
 # =========================
 
 @login_required
 def classes(request):
-    return render(request, 'accounts/classes.html')
+    return render(request, "accounts/classes.html")
 
 
-@login_required
-def lp(request):
-    return render(request, 'accounts/lab_practical.html')
-
-
-@login_required
-def f1st(request):
-    return render(request, 'accounts/1st.html')
+# =========================
+# LAB PRACTICAL
+# =========================
 
 @login_required
 def lp(request):
-    student_profile = getattr(request.user, 'student_profile', None)
-    return render(request, 'accounts/lab_practical.html', {
-        'student_profile': student_profile,
+    student_profile = getattr(
+        request.user, "student_profile", None
+    )
+
+    return render(request, "accounts/lab_practical.html", {
+        "student_profile": student_profile,
     })
 
 
+# =========================
+# FIRST PAGE
+# =========================
+
+@login_required
+def f1st(request):
+    return render(request, "accounts/1st.html")
+
+
+# =========================
+# ENGLISH TYPING
+# =========================
+
+@login_required
 def english_typing(request):
-    return render(request, "accounts/subtopics/english_typing.html")
+    return render(
+        request,
+        "accounts/subtopics/english_typing.html"
+    )
+
+
+# =========================
+# CLASS-WISE LESSONS
+# =========================
+
+@login_required
+def class_tasks(request):
+    student_profile = getattr(
+        request.user, "student_profile", None
+    )
+
+    if student_profile is None:
+        return redirect("profile")
+
+    class_number = student_profile.student_class
+
+    if class_number not in range(1, 11):
+        return render(request, "accounts/classes.html")
+
+    template_name = f"tasks/class{class_number}.html"
+
+    return render(request, template_name)

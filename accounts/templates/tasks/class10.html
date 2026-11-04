@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 10 ICT Lab · Typing, Hardware, Networking, Code & AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        nunito: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#3B82F6',
+                            yellow: '#FBBF24',
+                            pink: '#F472B6',
+                            green: '#34D399',
+                            purple: '#A78BFA',
+                            orange: '#FB923C',
+                            teal: '#2DD4BF',
+                            indigo: '#818CF8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Nunito', sans-serif; }
+        h1, h2, h3 { font-family: 'Fredoka', sans-serif; }
+        .card-hover { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15); }
+        .bounce-slow { animation: bounce 3s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .float { animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen font-nunito text-gray-800">
+
+    <!-- ===== HEADER ===== -->
+    <header class="relative overflow-hidden bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white">
+        <div class="absolute top-0 left-0 w-full h-full opacity-20">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-yellow-300 rounded-full blur-2xl"></div>
+            <div class="absolute bottom-0 right-20 w-40 h-40 bg-green-300 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/3 w-24 h-24 bg-white rounded-full blur-2xl"></div>
+        </div>
+        <div class="relative max-w-6xl mx-auto px-4 py-12 md:py-16 text-center">
+            <div class="inline-block mb-4 bounce-slow">
+                <span class="text-5xl md:text-7xl">🧑‍💻</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight drop-shadow-md">Class 10 ICT Lab</h1>
+            <p class="mt-3 text-lg md:text-2xl font-semibold text-white/90">Typing · Hardware · Networking · Programming · AI · Security</p>
+            <div class="mt-6 flex flex-wrap justify-center gap-3">
+                <span class="bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-bold">🎯 Learn by doing</span>
+                <span class="bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-bold">🎮 Play & explore</span>
+                <span class="bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-bold">🤖 Meet AI</span>
+                <span class="bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-bold">🚀 Level up</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+
+        <!-- SECTION GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+            <!-- CARD 1: Typing Practice -->
+            <a href="#typing" class="group block">
+                <div class="card-hover bg-white rounded-3xl p-6 md:p-8 shadow-lg border-4 border-transparent hover:border-blue-300 relative overflow-hidden h-full">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-100 rounded-bl-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4">⌨️</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-blue-600 mb-2">Typing Practice</h2>
+                        <p class="text-gray-600 text-sm md:text-base mb-4">From Class 1 to 10 — learn Nepali typing with fun lessons and speed tracking!</p>
+                        <span class="inline-block bg-blue-500 text-white font-bold text-sm px-5 py-2.5 rounded-full group-hover:bg-blue-600 transition-colors">Start typing →</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 2: Typing Games -->
+            <a href="#typing-games" class="group block">
+                <div class="card-hover bg-white rounded-3xl p-6 md:p-8 shadow-lg border-4 border-transparent hover:border-yellow-300 relative overflow-hidden h-full">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-yellow-100 rounded-bl-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4">🎮</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-yellow-600 mb-2">Typing Games</h2>
+                        <p class="text-gray-600 text-sm md:text-base mb-4">Class 1–4 kids: pop bubbles, clear the bay, and build castles by typing!</p>
+                        <span class="inline-block bg-yellow-500 text-white font-bold text-sm px-5 py-2.5 rounded-full group-hover:bg-yellow-600 transition-colors">Play games →</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 3: Sandbox -->
+            <a href="#sandbox" class="group block">
+                <div class="card-hover bg-white rounded-3xl p-6 md:p-8 shadow-lg border-4 border-transparent hover:border-pink-300 relative overflow-hidden h-full">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-pink-100 rounded-bl-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4">🧩</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-pink-600 mb-2">Hardware & Software Sandbox</h2>
+                        <p class="text-gray-600 text-sm md:text-base mb-4">Drag & drop to sort items — is it hardware or software? Find out!</p>
+                        <span class="inline-block bg-pink-500 text-white font-bold text-sm px-5 py-2.5 rounded-full group-hover:bg-pink-600 transition-colors">Explore sandbox →</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 4: Motherboard -->
+            <a href="#motherboard" class="group block">
+                <div class="card-hover bg-white rounded-3xl p-6 md:p-8 shadow-lg border-4 border-transparent hover:border-green-300 relative overflow-hidden h-full">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-green-100 rounded-bl-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4">🔌</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-green-600 mb-2">Motherboard & Accessories</h2>
+                        <p class="text-gray-600 text-sm md:text-base mb-4">Build a PC step by step — connect CPU, RAM, cables, and boot it up!</p>
+                        <span class="inline-block bg-green-500 text-white font-bold text-sm px-5 py-2.5 rounded-full group-hover:bg-green-600 transition-colors">Build a PC →</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 5: Networking -->
+            <a href="#networking" class="group block">
+                <div class="card-hover bg-white rounded-3xl p-6 md:p-8 shadow-lg border-4 border-transparent hover:border-purple-300 relative overflow-hidden h-full">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-purple-100 rounded-bl-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4">🌐</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-2">Networking Room</h2>
+                        <p class="text-gray-600 text-sm md:text-base mb-4">Routers, switches, cables — trace how the internet reaches your device!</p>
+                        <span class="inline-block bg-purple-500 text-white font-bold text-sm px-5 py-2.5 rounded-full group-hover:bg-purple-600 transition-colors">Enter network →</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 6: Programming -->
+            <a href="#programming" class="group block">
+                <div class="card-hover bg-white rounded-3xl p-6 md:p-8 shadow-lg border-4 border-transparent hover:border-orange-300 relative overflow-hidden h-full">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-orange-100 rounded-bl-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4">🐍</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-orange-600 mb-2">Programming</h2>
+                        <p class="text-gray-600 text-sm md:text-base mb-4">Learn Python first — games, calculators, and quizzes. C comes later!</p>
+                        <span class="inline-block bg-orange-500 text-white font-bold text-sm px-5 py-2.5 rounded-full group-hover:bg-orange-600 transition-colors">Start coding →</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 7: AI LAB (NEW) -->
+            <a href="#ai" class="group block">
+                <div class="card-hover bg-white rounded-3xl p-6 md:p-8 shadow-lg border-4 border-transparent hover:border-indigo-300 relative overflow-hidden h-full">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-100 rounded-bl-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4">🤖</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-indigo-600 mb-2">AI Lab</h2>
+                        <p class="text-gray-600 text-sm md:text-base mb-4">How do machines "think"? Train mini models, chat with AI, and spot AI in everyday life!</p>
+                        <span class="inline-block bg-indigo-500 text-white font-bold text-sm px-5 py-2.5 rounded-full group-hover:bg-indigo-600 transition-colors">Explore AI →</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 8: ICT Info -->
+            <a href="#ict-info" class="group block">
+                <div class="card-hover bg-white rounded-3xl p-6 md:p-8 shadow-lg border-4 border-transparent hover:border-red-300 relative overflow-hidden h-full">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-red-100 rounded-bl-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4">🛡️</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-red-500 mb-2">Hacking & ICT Info</h2>
+                        <p class="text-gray-600 text-sm md:text-base mb-4">Ethical hacking, mobile tech, passwords, and staying safe online.</p>
+                        <span class="inline-block bg-red-500 text-white font-bold text-sm px-5 py-2.5 rounded-full group-hover:bg-red-600 transition-colors">Learn safety →</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- ===== FUN BANNER ===== -->
+        <div class="mt-12 md:mt-16 bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-200 rounded-3xl p-6 md:p-10 text-center relative overflow-hidden">
+            <div class="absolute -top-6 -left-6 text-7xl opacity-30 float">✨</div>
+            <div class="absolute -bottom-8 -right-4 text-8xl opacity-30 float" style="animation-delay: 1s;">🚀</div>
+            <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-2">Ready to become an ICT superstar? 🌟</h2>
+            <p class="text-gray-700 text-base md:text-lg font-semibold max-w-2xl mx-auto">
+                Pick any card above and start your adventure — now with AI powers! Every click brings you closer to being a tech whiz.
+            </p>
+        </div>
+
+    </main>
+
+    <!-- ===== AI SECTION (full detail) ===== -->
+    <section id="ai" class="bg-gradient-to-br from-indigo-50 to-purple-50 py-12 md:py-16 border-t-4 border-indigo-200">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <div class="text-6xl mb-3 bounce-slow">🤖</div>
+                <h2 class="text-3xl md:text-5xl font-bold text-indigo-600 mb-3">AI Lab</h2>
+                <p class="text-gray-600 text-base md:text-lg font-semibold max-w-2xl mx-auto">
+                    Artificial Intelligence isn't magic — it's math, data, and lots of practice. Let's explore it safely and hands-on!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                <!-- AI Block 1 -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border-2 border-indigo-100">
+                    <div class="text-4xl mb-3">🧠</div>
+                    <h3 class="text-xl md:text-2xl font-bold text-indigo-600 mb-2">What is AI?</h3>
+                    <p class="text-gray-600 text-sm md:text-base mb-3">
+                        AI is when computers learn patterns from examples instead of following only fixed rules. It can recognize faces, translate text, and even write stories!
+                    </p>
+                    <ul class="list-disc list-inside text-gray-600 text-sm md:text-base space-y-1">
+                        <li>Machine Learning: learn from data</li>
+                        <li>Neural Networks: brain-inspired math</li>
+                        <li>Generative AI: creates new text, images, and code</li>
+                    </ul>
+                </div>
+
+                <!-- AI Block 2 -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border-2 border-indigo-100">
+                    <div class="text-4xl mb-3">🎮</div>
+                    <h3 class="text-xl md:text-2xl font-bold text-indigo-600 mb-2">Train-a-Model Mini Game</h3>
+                    <p class="text-gray-600 text-sm md:text-base mb-3">
+                        Teach a simple AI to sort fruits! Drag examples into categories and watch the "model" improve.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-600 text-sm md:text-base space-y-1">
+                        <li>Round 1: give 3 examples per fruit</li>
+                        <li>Round 2: test the AI — does it guess right?</li>
+                        <li>Round 3: add tricky examples (a tomato?)</li>
+                    </ul>
+                </div>
+
+                <!-- AI Block 3 -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border-2 border-indigo-100">
+                    <div class="text-4xl mb-3">💬</div>
+                    <h3 class="text-xl md:text-2xl font-bold text-indigo-600 mb-2">Chat with AI (Safely)</h3>
+                    <p class="text-gray-600 text-sm md:text-base mb-3">
+                        Practice writing good prompts and spot when an AI might be wrong. Never share private info with AI chatbots.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-600 text-sm md:text-base space-y-1">
+                        <li>Try: "Explain photosynthesis to a 10-year-old"</li>
+                        <li>Ask the same question two ways — compare</li>
+                        <li>Fact-check one AI answer with a book or teacher</li>
+                    </ul>
+                </div>
+
+                <!-- AI Block 4 -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border-2 border-indigo-100">
+                    <div class="text-4xl mb-3">🌍</div>
+                    <h3 class="text-xl md:text-2xl font-bold text-indigo-600 mb-2">AI Around You</h3>
+                    <p class="text-gray-600 text-sm md:text-base mb-3">
+                        You use AI every day — often without noticing. Let's find it!
+                    </p>
+                    <ul class="list-disc list-inside text-gray-600 text-sm md:text-base space-y-1">
+                        <li>YouTube / TikTok recommendations</li>
+                        <li>Nepali speech-to-text & translation</li>
+                        <li>Camera portrait mode & face unlock</li>
+                        <li>Spam filters in email</li>
+                    </ul>
+                </div>
+
+                <!-- AI Block 5 -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border-2 border-indigo-100">
+                    <div class="text-4xl mb-3">⚖️</div>
+                    <h3 class="text-xl md:text-2xl font-bold text-indigo-600 mb-2">AI Ethics & Safety</h3>
+                    <p class="text-gray-600 text-sm md:text-base mb-3">
+                        AI can be wrong, biased, or misused. Good digital citizens know how to use it responsibly.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-600 text-sm md:text-base space-y-1">
+                        <li>Don't share personal data with AI tools</li>
+                        <li>AI can hallucinate — always verify</li>
+                        <li>Give credit when AI helps with homework</li>
+                        <li>Report deepfakes and AI scams</li>
+                    </ul>
+                </div>
+
+                <!-- AI Block 6 -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border-2 border-indigo-100">
+                    <div class="text-4xl mb-3">🐍</div>
+                    <h3 class="text-xl md:text-2xl font-bold text-indigo-600 mb-2">Code Your First AI (Python)</h3>
+                    <p class="text-gray-600 text-sm md:text-base mb-3">
+                        Start small with Python. No heavy math needed — just curiosity!
+                    </p>
+                    <ul class="list-disc list-inside text-gray-600 text-sm md:text-base space-y-1">
+                        <li>Simple chatbot with keyword matching</li>
+                        <li>Iris flower classifier with scikit-learn</li>
+                        <li>Handwritten digit recognizer (MNIST demo)</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="mt-10 bg-indigo-600 text-white rounded-3xl p-6 md:p-8 text-center shadow-lg">
+                <p class="text-lg md:text-2xl font-bold mb-2">🤖 AI is a tool — you're the boss!</p>
+                <p class="text-white/90 text-sm md:text-base">Learn it, question it, and always use it to help others. That's the ICT Lab way.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-gray-800 text-white/80 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-sm md:text-base font-semibold">🎓 Class 10 ICT Lab — Learn, play, and grow with technology!</p>
+            <p class="text-xs mt-2 text-white/50">Made with ❤️ for curious minds.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

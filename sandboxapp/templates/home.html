@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Lab · Learn Computers by Doing</title>
+    <title>PlayLab · Learn Computers by Playing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -18,39 +18,96 @@
                             600: '#e53935',
                             700: '#d32f2f',
                             800: '#c62828',
+                        },
+                        pop: {
+                            yellow: '#fbbf24',
+                            pink: '#ec4899',
+                            blue: '#3b82f6',
+                            green: '#22c55e',
+                            purple: '#a855f7',
+                            orange: '#f97316',
                         }
                     },
                     fontFamily: {
-                        sans: ['Roboto', 'system-ui', 'sans-serif'],
+                        sans: ['Fredoka', 'system-ui', 'sans-serif'],
+                        fun: ['"Baloo 2"', 'cursive', 'system-ui'],
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+        @keyframes rainbow-text {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes blob {
+            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .float { animation: float 3s ease-in-out infinite; }
+        .wiggle { animation: wiggle 1s ease-in-out infinite; }
+        .bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
+        .sparkle { animation: sparkle 2s ease-in-out infinite; }
+        .rainbow-text {
+            background: linear-gradient(90deg, #fbbf24, #ec4899, #3b82f6, #22c55e, #a855f7, #f97316, #fbbf24);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow-text 4s ease infinite;
+        }
+        .blob { animation: blob 8s ease-in-out infinite; }
+        .spin-slow { animation: spin-slow 12s linear infinite; }
+        .tilt-hover:hover { transform: translateY(-6px) rotate(-1deg) scale(1.02); }
+    </style>
 </head>
 
-<body class="font-sans text-gray-900 bg-white antialiased">
+<body class="font-sans text-gray-900 bg-gradient-to-b from-amber-50 via-white to-blue-50 antialiased overflow-x-hidden">
 
 <!-- =========================
      NAVBAR
      ========================= -->
-<nav class="sticky top-0 z-50 h-16 border-b border-gray-200 bg-white/85 backdrop-blur">
+<nav class="sticky top-0 z-50 h-20 border-b-4 border-dashed border-brand-200 bg-white/90 backdrop-blur-md">
     <div class="max-w-6xl mx-auto h-full px-4 flex items-center justify-between">
 
-        <a href="/" class="flex items-center gap-2 text-xl font-extrabold tracking-tight">
-            <span class="w-2 h-2 rounded-full bg-brand-600"></span>
-            The<span class="font-normal text-gray-500">Lab</span>
+        <a href="/" class="flex items-center gap-2 text-2xl font-black tracking-tight font-fun">
+            <span class="w-3 h-3 rounded-full bg-brand-600 animate-pulse"></span>
+            <span class="rainbow-text">PlayLab</span>
+            <span class="text-3xl">🧪</span>
         </a>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3">
             <a href="{% url 'login' %}"
-               class="px-4 py-2 text-sm font-semibold text-gray-700 rounded-full hover:bg-gray-100 transition">
-                Login
+               class="px-5 py-2.5 text-sm font-bold text-gray-700 rounded-full border-2 border-gray-200 hover:bg-gray-100 hover:border-gray-300 transition-all tilt-hover">
+                Login 👋
             </a>
             <a href="{% url 'register' %}"
-               class="px-4 py-2 text-sm font-semibold text-white bg-brand-600 rounded-full shadow-sm shadow-brand-600/30 hover:bg-brand-700 transition">
-                Register
+               class="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-brand-500 to-brand-700 rounded-full shadow-lg shadow-brand-500/40 hover:shadow-xl hover:-translate-y-0.5 transition-all">
+                Join Free 🚀
             </a>
         </div>
 
@@ -58,99 +115,138 @@
 </nav>
 
 
-<main>
+<main class="relative">
+
+<!-- Floating background decorations -->
+<div class="absolute top-40 left-10 w-24 h-24 bg-pop-yellow/30 blob pointer-events-none"></div>
+<div class="absolute top-60 right-20 w-32 h-32 bg-pop-pink/20 blob pointer-events-none" style="animation-delay:2s"></div>
+<div class="absolute bottom-40 left-1/4 w-40 h-40 bg-pop-blue/20 blob pointer-events-none" style="animation-delay:4s"></div>
 
 <!-- =========================
      HERO
      ========================= -->
-<section class="py-24 overflow-hidden">
+<section class="pt-16 pb-24 overflow-hidden relative">
     <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
 
         <!-- Content -->
-        <div>
-            <span class="inline-block px-3 py-1 mb-6 text-xs font-semibold text-gray-600 border border-gray-200 rounded-full">
-                💻 Learn • Explore • Create
+        <div class="relative z-10">
+            <span class="inline-block px-4 py-2 mb-6 text-sm font-bold text-gray-700 bg-white border-2 border-dashed border-brand-300 rounded-full shadow-sm">
+                🎮 Learn • Play • Create • Win
             </span>
 
-            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-6">
-                Learn Computers
-                <span class="block text-gray-400">By Doing.</span>
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-6 font-fun">
+                Computers are
+                <span class="block rainbow-text">SUPER FUN!</span>
+                <span class="block text-3xl sm:text-4xl text-gray-500 mt-3">
+                    Learn by playing, not memorizing 🤯
+                </span>
             </h1>
 
-            <p class="max-w-lg text-gray-500 text-lg leading-relaxed mb-8">
-                The Lab is a practical computer learning platform where students
-                learn technology through activities, experiments, challenges,
-                and real-world practice.
+            <p class="max-w-lg text-gray-600 text-lg leading-relaxed mb-8 font-medium">
+                Welcome to the coolest computer lab ever! 🎉
+                Play games, solve puzzles, build stuff, and become
+                a tech superhero — all while having a blast!
             </p>
 
-            <div class="flex flex-wrap gap-3">
+            <div class="flex flex-wrap gap-4">
                 <a href="{% url 'register' %}"
-                   class="px-6 py-3 text-sm font-semibold text-white bg-brand-600 rounded-full shadow-md shadow-brand-600/30 hover:bg-brand-700 hover:-translate-y-0.5 transition">
-                    Get Started →
+                   class="px-7 py-4 text-base font-bold text-white bg-gradient-to-r from-brand-500 to-pop-pink rounded-full shadow-xl shadow-brand-500/40 hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-2">
+                    Start Playing 🎯
                 </a>
                 <a href="{% url 'login' %}"
-                   class="px-6 py-3 text-sm font-semibold text-gray-800 border border-gray-200 rounded-full hover:border-gray-400 hover:-translate-y-0.5 transition">
-                    I Already Have an Account
+                   class="px-7 py-4 text-base font-bold text-gray-800 bg-white border-2 border-gray-300 rounded-full hover:border-gray-400 hover:-translate-y-1 transition-all flex items-center gap-2">
+                    I have an account 🎪
                 </a>
+            </div>
+
+            <!-- Fun stats -->
+            <div class="flex flex-wrap gap-6 mt-10">
+                <div class="text-center">
+                    <div class="text-3xl font-black text-brand-600">500+</div>
+                    <div class="text-xs font-bold text-gray-500">Happy Kids</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-black text-pop-blue">100+</div>
+                    <div class="text-xs font-bold text-gray-500">Fun Lessons</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-black text-pop-green">50+</div>
+                    <div class="text-xs font-bold text-gray-500">Games & Quizzes</div>
+                </div>
             </div>
         </div>
 
-        <!-- Preview -->
-        <div class="flex justify-center">
-            <div class="w-full max-w-md bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-2xl shadow-gray-900/10">
+        <!-- Preview - Floating window with playful style -->
+        <div class="flex justify-center relative">
+            <!-- Decorative sparkles -->
+            <div class="absolute -top-6 -left-6 text-4xl sparkle" style="animation-delay:0.5s">✨</div>
+            <div class="absolute -bottom-4 -right-4 text-5xl sparkle" style="animation-delay:1.2s">🌟</div>
+            <div class="absolute top-1/2 -right-8 text-3xl float" style="animation-delay:0.8s">🎈</div>
 
-                <!-- Window bar -->
-                <div class="h-10 px-4 flex items-center justify-between border-b border-gray-200 bg-gray-50">
-                    <div class="flex gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+            <div class="w-full max-w-md bg-white border-4 border-brand-200 rounded-3xl overflow-hidden shadow-2xl shadow-brand-500/30 float">
+
+                <!-- Window bar with emoji buttons -->
+                <div class="h-12 px-4 flex items-center justify-between border-b-4 border-brand-100 bg-gradient-to-r from-amber-50 to-pink-50">
+                    <div class="flex gap-2">
+                        <span class="w-4 h-4 rounded-full bg-red-400 border-2 border-red-500"></span>
+                        <span class="w-4 h-4 rounded-full bg-yellow-400 border-2 border-yellow-500"></span>
+                        <span class="w-4 h-4 rounded-full bg-green-400 border-2 border-green-500"></span>
                     </div>
-                    <span class="text-[11px] text-gray-500">The Lab</span>
+                    <span class="text-xs font-bold text-gray-600 font-fun">🎮 PlayLab</span>
+                    <span class="text-lg">🏫</span>
                 </div>
 
                 <!-- Screen -->
-                <div class="grid grid-cols-[60px_1fr] min-h-[320px]">
+                <div class="grid grid-cols-[70px_1fr] min-h-[340px]">
 
-                    <!-- Sidebar -->
-                    <div class="py-5 px-2 bg-gray-50 border-r border-gray-200">
-                        <div class="w-9 h-9 mx-auto mb-6 rounded-lg bg-brand-600 text-white flex items-center justify-center text-[11px] font-bold">
-                            TL
+                    <!-- Sidebar with cute icons -->
+                    <div class="py-5 px-2 bg-gradient-to-b from-blue-50 to-pink-50 border-r-4 border-brand-100">
+                        <div class="w-11 h-11 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-brand-500 to-pop-pink text-white flex items-center justify-center text-lg font-black shadow-lg wiggle">
+                            🧪
                         </div>
-                        <div class="w-7 h-1.5 mx-auto my-3 rounded-full bg-brand-600"></div>
-                        <div class="w-7 h-1.5 mx-auto my-3 rounded-full bg-gray-300"></div>
-                        <div class="w-7 h-1.5 mx-auto my-3 rounded-full bg-gray-300"></div>
-                        <div class="w-7 h-1.5 mx-auto my-3 rounded-full bg-gray-300"></div>
+                        <div class="w-8 h-2 mx-auto my-4 rounded-full bg-brand-500"></div>
+                        <div class="w-8 h-2 mx-auto my-4 rounded-full bg-pop-blue/60"></div>
+                        <div class="w-8 h-2 mx-auto my-4 rounded-full bg-pop-green/60"></div>
+                        <div class="w-8 h-2 mx-auto my-4 rounded-full bg-pop-purple/60"></div>
                     </div>
 
                     <!-- Content -->
                     <div class="p-6">
-                        <p class="text-[10px] font-bold tracking-widest text-gray-400 mb-1">STUDENT LAB</p>
-                        <h3 class="text-xl font-bold mb-1">Welcome back 👋</h3>
-                        <p class="text-sm text-gray-500 mb-5">Ready to explore?</p>
+                        <p class="text-[11px] font-black tracking-widest text-brand-500 mb-1 font-fun">🎓 MY LAB</p>
+                        <h3 class="text-2xl font-black mb-1 font-fun">Hey, Champ! 👋</h3>
+                        <p class="text-sm text-gray-500 mb-5">What do you want to explore today?</p>
 
-                        <div class="grid grid-cols-2 gap-2.5">
-                            {% for icon, title, sub in lesson_cards %}
-                            {% endfor %}
-                            <div class="p-3 border border-gray-200 rounded-xl hover:-translate-y-0.5 hover:border-gray-400 transition">
-                                <div class="w-8 h-8 mb-2 rounded-lg bg-gray-100 flex items-center justify-center text-sm">⌨</div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="p-3 border-2 border-blue-200 rounded-2xl bg-blue-50 hover:-translate-y-1 hover:border-blue-400 transition-all cursor-pointer">
+                                <div class="w-9 h-9 mb-2 rounded-xl bg-blue-200 flex items-center justify-center text-lg">⌨️</div>
                                 <strong class="block text-xs font-bold">Keyboard</strong>
-                                <small class="text-[10px] text-gray-500">Learn & Practice</small>
+                                <small class="text-[10px] text-gray-500">Tap & Type</small>
                             </div>
-                            <div class="p-3 border border-gray-200 rounded-xl hover:-translate-y-0.5 hover:border-gray-400 transition">
-                                <div class="w-8 h-8 mb-2 rounded-lg bg-gray-100 flex items-center justify-center text-sm">&lt;/&gt;</div>
+                            <div class="p-3 border-2 border-green-200 rounded-2xl bg-green-50 hover:-translate-y-1 hover:border-green-400 transition-all cursor-pointer">
+                                <div class="w-9 h-9 mb-2 rounded-xl bg-green-200 flex items-center justify-center text-lg">&lt;/&gt;</div>
                                 <strong class="block text-xs font-bold">Coding</strong>
-                                <small class="text-[10px] text-gray-500">Build Something</small>
+                                <small class="text-[10px] text-gray-500">Build Stuff</small>
                             </div>
-                            <div class="p-3 border border-gray-200 rounded-xl hover:-translate-y-0.5 hover:border-gray-400 transition">
-                                <div class="w-8 h-8 mb-2 rounded-lg bg-gray-100 flex items-center justify-center text-sm">◎</div>
+                            <div class="p-3 border-2 border-purple-200 rounded-2xl bg-purple-50 hover:-translate-y-1 hover:border-purple-400 transition-all cursor-pointer">
+                                <div class="w-9 h-9 mb-2 rounded-xl bg-purple-200 flex items-center justify-center text-lg">🌐</div>
                                 <strong class="block text-xs font-bold">Internet</strong>
-                                <small class="text-[10px] text-gray-500">Explore Safely</small>
+                                <small class="text-[10px] text-gray-500">Surf Safely</small>
                             </div>
-                            <div class="p-3 border border-gray-200 rounded-xl hover:-translate-y-0.5 hover:border-gray-400 transition">
-                                <div class="w-8 h-8 mb-2 rounded-lg bg-gray-100 flex items-center justify-center text-sm">◇</div>
+                            <div class="p-3 border-2 border-orange-200 rounded-2xl bg-orange-50 hover:-translate-y-1 hover:border-orange-400 transition-all cursor-pointer">
+                                <div class="w-9 h-9 mb-2 rounded-xl bg-orange-200 flex items-center justify-center text-lg">🏆</div>
                                 <strong class="block text-xs font-bold">Challenges</strong>
-                                <small class="text-[10px] text-gray-500">Test Yourself</small>
+                                <small class="text-[10px] text-gray-500">Beat Levels</small>
+                            </div>
+                        </div>
+
+                        <!-- Fun progress bar -->
+                        <div class="mt-5 p-3 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                            <div class="flex justify-between text-[10px] font-bold text-gray-500 mb-1">
+                                <span>⭐ Your Progress</span>
+                                <span>3/10</span>
+                            </div>
+                            <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full w-[30%] bg-gradient-to-r from-brand-500 to-pop-pink rounded-full"></div>
                             </div>
                         </div>
                     </div>
@@ -166,48 +262,106 @@
 <!-- =========================
      FEATURES
      ========================= -->
-<section class="py-24 bg-gray-50 border-y border-gray-200">
+<section class="py-24 bg-gradient-to-b from-blue-50 to-white border-y-4 border-dashed border-brand-100">
     <div class="max-w-6xl mx-auto px-4">
 
-        <div class="max-w-2xl mb-14">
-            <p class="text-[11px] font-bold tracking-widest text-brand-600 mb-3">WHY THE LAB?</p>
-            <h2 class="text-4xl sm:text-5xl font-black tracking-tight leading-[1.1] mb-4">
+        <div class="max-w-2xl mb-16">
+            <p class="text-sm font-black tracking-widest text-brand-500 mb-3 font-fun">🤔 WHY PLAyLAB?</p>
+            <h2 class="text-4xl sm:text-5xl font-black tracking-tight leading-[1.1] mb-4 font-fun">
                 Learning should be
-                <span class="text-gray-400">hands-on.</span>
+                <span class="rainbow-text">AWESOME!</span>
             </h2>
-            <p class="text-gray-500 max-w-lg">
-                Students shouldn't only read about computers.
-                They should interact with them, experiment,
-                solve problems, and build things.
+            <p class="text-gray-600 max-w-lg text-lg">
+                No boring textbooks here! 🚫📚
+                We turn computer learning into an adventure
+                with games, puzzles, and cool challenges.
             </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-4">
+        <div class="grid md:grid-cols-3 gap-6">
 
-            <div class="p-7 bg-white border border-gray-200 rounded-2xl hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-900/5 transition">
-                <div class="w-11 h-11 mb-5 rounded-xl bg-brand-50 flex items-center justify-center text-xl">💻</div>
-                <h3 class="text-lg font-bold mb-2">Practical Learning</h3>
-                <p class="text-sm text-gray-500 leading-relaxed">
-                    Learn computer concepts through activities instead of simply memorizing definitions.
+            <div class="p-7 bg-white border-4 border-brand-100 rounded-3xl hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 hover:border-brand-300 transition-all duration-300 group">
+                <div class="w-14 h-14 mb-5 rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-3xl group-hover:wiggle">💻</div>
+                <h3 class="text-xl font-black mb-2 font-fun">Play & Learn</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    Learn computer stuff by playing games and doing fun activities — not by memorizing boring definitions!
                 </p>
             </div>
 
-            <div class="p-7 bg-white border border-gray-200 rounded-2xl hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-900/5 transition">
-                <div class="w-11 h-11 mb-5 rounded-xl bg-brand-50 flex items-center justify-center text-xl">🧠</div>
-                <h3 class="text-lg font-bold mb-2">Learn by Exploring</h3>
-                <p class="text-sm text-gray-500 leading-relaxed">
-                    Experiment, make mistakes, solve problems, and discover how technology works.
+            <div class="p-7 bg-white border-4 border-brand-100 rounded-3xl hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 hover:border-brand-300 transition-all duration-300 group">
+                <div class="w-14 h-14 mb-5 rounded-2xl bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center text-3xl group-hover:wiggle">🧠</div>
+                <h3 class="text-xl font-black mb-2 font-fun">Explore & Discover</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    Make mistakes, try again, and discover how technology works. It's like being a detective! 🕵️
                 </p>
             </div>
 
-            <div class="p-7 bg-white border border-gray-200 rounded-2xl hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-900/5 transition">
-                <div class="w-11 h-11 mb-5 rounded-xl bg-brand-50 flex items-center justify-center text-xl">🚀</div>
-                <h3 class="text-lg font-bold mb-2">Build Real Skills</h3>
-                <p class="text-sm text-gray-500 leading-relaxed">
-                    Develop digital skills that students can actually use outside the classroom.
+            <div class="p-7 bg-white border-4 border-brand-100 rounded-3xl hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20 hover:border-brand-300 transition-all duration-300 group">
+                <div class="w-14 h-14 mb-5 rounded-2xl bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center text-3xl group-hover:wiggle">🚀</div>
+                <h3 class="text-xl font-black mb-2 font-fun">Become a Superhero</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    Build real skills that you can use to create cool things and impress your friends! 💪
                 </p>
             </div>
 
+        </div>
+
+        <!-- Fun fact marquee -->
+        <div class="mt-16 overflow-hidden">
+            <div class="flex gap-4 animate-[marquee_20s_linear_infinite]">
+                <div class="flex gap-4 whitespace-nowrap">
+                    <span class="px-5 py-2.5 bg-white border-2 border-brand-200 rounded-full text-sm font-bold text-gray-700">💡 Did you know? Computers use 1s and 0s!</span>
+                    <span class="px-5 py-2.5 bg-white border-2 border-brand-200 rounded-full text-sm font-bold text-gray-700">🎮 The first computer game was made in 1962!</span>
+                    <span class="px-5 py-2.5 bg-white border-2 border-brand-200 rounded-full text-sm font-bold text-gray-700">🤖 Robots are programmed by people like you!</span>
+                    <span class="px-5 py-2.5 bg-white border-2 border-brand-200 rounded-full text-sm font-bold text-gray-700">🌐 The internet is a giant web of connected computers!</span>
+                    <span class="px-5 py-2.5 bg-white border-2 border-brand-200 rounded-full text-sm font-bold text-gray-700">💾 The first computer bug was a real moth!</span>
+                    <span class="px-5 py-2.5 bg-white border-2 border-brand-200 rounded-full text-sm font-bold text-gray-700">🎨 Coding lets you create art, games, and stories!</span>
+                    <span class="px-5 py-2.5 bg-white border-2 border-brand-200 rounded-full text-sm font-bold text-gray-700">💡 Did you know? Computers use 1s and 0s!</span>
+                    <span class="px-5 py-2.5 bg-white border-2 border-brand-200 rounded-full text-sm font-bold text-gray-700">🎮 The first computer game was made in 1962!</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =========================
+     FUN ACTIVITIES PREVIEW
+     ========================= -->
+<section class="py-24">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-14">
+            <span class="text-4xl">🎪</span>
+            <h2 class="text-4xl sm:text-5xl font-black tracking-tight mt-3 mb-4 font-fun">
+                Pick Your <span class="rainbow-text">Adventure!</span>
+            </h2>
+            <p class="text-gray-600 max-w-lg mx-auto text-lg">
+                Every day is a new quest. Choose your path and start exploring!
+            </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-4 border-blue-200 rounded-3xl text-center hover:-translate-y-2 hover:shadow-xl transition-all cursor-pointer">
+                <div class="text-5xl mb-3">⌨️</div>
+                <h3 class="font-black text-lg font-fun">Typing Ninja</h3>
+                <p class="text-xs text-gray-600 mt-1">Learn to type super fast!</p>
+            </div>
+            <div class="p-6 bg-gradient-to-br from-green-50 to-green-100 border-4 border-green-200 rounded-3xl text-center hover:-translate-y-2 hover:shadow-xl transition-all cursor-pointer">
+                <div class="text-5xl mb-3">🐍</div>
+                <h3 class="font-black text-lg font-fun">Code Creator</h3>
+                <p class="text-xs text-gray-600 mt-1">Make games with code!</p>
+            </div>
+            <div class="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-4 border-purple-200 rounded-3xl text-center hover:-translate-y-2 hover:shadow-xl transition-all cursor-pointer">
+                <div class="text-5xl mb-3">🎨</div>
+                <h3 class="font-black text-lg font-fun">Pixel Artist</h3>
+                <p class="text-xs text-gray-600 mt-1">Create digital art!</p>
+            </div>
+            <div class="p-6 bg-gradient-to-br from-orange-50 to-orange-100 border-4 border-orange-200 rounded-3xl text-center hover:-translate-y-2 hover:shadow-xl transition-all cursor-pointer">
+                <div class="text-5xl mb-3">🔐</div>
+                <h3 class="font-black text-lg font-fun">Cyber Detective</h3>
+                <p class="text-xs text-gray-600 mt-1">Stay safe online!</p>
+            </div>
         </div>
     </div>
 </section>
@@ -218,19 +372,26 @@
      ========================= -->
 <section class="py-24">
     <div class="max-w-6xl mx-auto px-4">
-        <div class="p-12 sm:p-14 rounded-3xl bg-brand-600 text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 shadow-2xl shadow-brand-600/30">
+        <div class="p-12 sm:p-16 rounded-[3rem] bg-gradient-to-br from-brand-500 via-brand-600 to-pop-pink text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 shadow-2xl shadow-brand-500/40 relative overflow-hidden">
 
-            <div>
-                <p class="text-[11px] font-bold tracking-widest text-white/60 mb-3">READY TO START?</p>
-                <h2 class="text-4xl sm:text-5xl font-black tracking-tight mb-3">Enter the Lab.</h2>
-                <p class="text-white/80 text-sm max-w-md">
-                    Create your account and start exploring practical computer learning.
+            <!-- Decorative floating elements -->
+            <div class="absolute top-6 left-8 text-4xl float">🎈</div>
+            <div class="absolute bottom-6 right-10 text-4xl float" style="animation-delay:1s">⭐</div>
+            <div class="absolute top-1/2 left-1/4 text-3xl float" style="animation-delay:0.5s">✨</div>
+            <div class="absolute top-10 right-1/4 text-3xl float" style="animation-delay:1.5s">🎉</div>
+
+            <div class="relative z-10">
+                <p class="text-sm font-black tracking-widest text-white/70 mb-3 font-fun">🚀 READY TO START?</p>
+                <h2 class="text-4xl sm:text-5xl font-black tracking-tight mb-4 font-fun">Join the Lab!</h2>
+                <p class="text-white/90 text-base max-w-md">
+                    Create your free account and start your epic learning adventure.
+                    It's super fun, we promise! 🤞
                 </p>
             </div>
 
             <a href="{% url 'register' %}"
-               class="shrink-0 self-start lg:self-auto px-7 py-3.5 bg-white text-brand-700 font-bold text-sm rounded-full hover:-translate-y-0.5 hover:shadow-xl transition">
-                Create Account →
+               class="relative z-10 shrink-0 self-start lg:self-auto px-8 py-4 bg-white text-brand-600 font-black text-base rounded-full hover:-translate-y-1 hover:shadow-2xl transition-all flex items-center gap-2 font-fun">
+                Create Account 🎮
             </a>
 
         </div>
@@ -243,17 +404,19 @@
 <!-- =========================
      FOOTER
      ========================= -->
-<footer class="py-10 border-t border-gray-200">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<footer class="py-12 border-t-4 border-dashed border-brand-100 bg-white">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
 
-        <div class="flex items-center gap-2 text-base font-extrabold">
-            <span class="w-2 h-2 rounded-full bg-brand-600"></span>
-            The<span class="font-normal text-gray-500">Lab</span>
+        <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-brand-600 animate-pulse"></span>
+            <span class="text-xl font-black font-fun">
+                <span class="rainbow-text">PlayLab</span> 🧪
+            </span>
         </div>
 
-        <p class="text-sm text-gray-500">Practical computer learning for students.</p>
+        <p class="text-sm font-bold text-gray-500">Making computer learning SUPER fun! 🎉</p>
 
-        <p class="text-xs text-gray-400">© 2026 The Lab Program.</p>
+        <p class="text-xs text-gray-400 font-medium">© 2026 PlayLab Program. Made with ❤️ for curious kids.</p>
 
     </div>
 </footer>
