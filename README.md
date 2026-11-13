@@ -2,7 +2,7 @@
 
 New-age Exploration & Open Research Academy  (Nexora)
 
-Nexora is an independent project that I'm exploring and building in my free time.
+Nexora is an independent project that I'm exploring and building in my free time and I am learning and enjoying "Vibe Coding as well". This is cool and time saving.
 
 I'm experimenting with modern development workflows, AI-assisted coding (often called *vibe coding*), and tools that make it possible to turn ideas into working software more quickly.
 
