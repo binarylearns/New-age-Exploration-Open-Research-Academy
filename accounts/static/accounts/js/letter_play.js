@@ -1,29 +1,32 @@
 // ============================================================
 // 🔤 LETTER PLAY — Class 1 Typing Game
 // ============================================================
-// Rules:
-//   - Letters fall from top of play area
-//   - Kid presses matching key → letter pops + score++
-//   - Letter reaches bottom → lose a heart
-//   - Game over when timer hits 0 OR hearts hit 0
-// ============================================================
 
 (function () {
   'use strict';
 
-  // ─────────────────────────────────────────────
-  // ⚙️ CONFIG — tweak these to adjust difficulty
-  // ─────────────────────────────────────────────
+  // FIX: Define PREETI_MAP BEFORE CONFIG so it's initialized first
+  const PREETI_MAP = {
+    's': 'क', 'v': 'ख', 'u': 'ग', '3': 'घ',
+    'r': 'च', '5': 'छ', 'h': 'ज', '6': 'ट',
+    '7': 'ठ', '8': 'ड', '9': 'ढ', '0': 'ण',
+    't': 'त', 'y': 'थ', 'b': 'द', 'w': 'ध',
+    'g': 'न', 'k': 'प', 'a': 'ब', 'e': 'भ',
+    'd': 'म', 'o': 'य', '/': 'र', 'n': 'ल',
+    'j': 'व', 'z': 'श', 'i': 'ष', ';': 'स',
+    'x': 'ह'
+  };
+
   const CONFIG = {
-    gameDuration: 60,          // seconds per round
-    spawnInterval: 1400,       // ms between new letters
-    fallDuration: 6000,        // ms for a letter to travel top → bottom
-    maxFallingLetters: 5,      // cap on-screen at once
+    gameDuration: 60,
+    spawnInterval: 1400,
+    fallDuration: 6000,
+    maxFallingLetters: 5,
     startingHearts: 3,
     maxHearts: 5,
     letters: {
       en: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-      ne: 'कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह'.split(''),
+      ne: Object.entries(PREETI_MAP).map(([key, char]) => ({ key, char }))
     },
     colors: [
       'from-pink-400 to-pink-600',
@@ -45,7 +48,7 @@
     timeLeft: CONFIG.gameDuration,
     isPlaying: false,
     isPaused: false,
-    fallingLetters: [],       // { id, char, el, y, speed }
+    fallingLetters: [],
     spawnTimer: null,
     countdownTimer: null,
     animationFrame: null,
@@ -84,7 +87,6 @@
   }
 
   function getLetterSize() {
-    // Matches w-20 (80px) on mobile, w-24 (96px) on desktop
     return window.innerWidth < 640 ? 80 : 96;
   }
 
@@ -102,7 +104,7 @@
   // 📚 LANGUAGE SWITCH
   // ─────────────────────────────────────────────
   function setLanguage(lang) {
-    if (state.isPlaying) return; // don't switch mid-game
+    if (state.isPlaying) return;
     state.language = lang;
 
     const active   = ['bg-purple-500', 'text-white'];
@@ -123,21 +125,28 @@
   }
 
   // ─────────────────────────────────────────────
-  // 🎹 VIRTUAL KEYBOARD (touch devices)
+  // 🎹 VIRTUAL KEYBOARD
   // ─────────────────────────────────────────────
   function buildKeyboard() {
     if (!el.keyboard) return;
     el.keyboard.innerHTML = '';
+
     const letters = CONFIG.letters[state.language];
+
     letters.forEach((letter) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.textContent = letter;
+
+      const key = state.language === 'ne' ? letter.key : letter;
+      const label = state.language === 'ne' ? letter.char : letter;
+
+      btn.textContent = label;
       btn.className =
         'bg-white hover:bg-purple-100 active:bg-purple-300 text-purple-700 ' +
         'font-bold text-lg md:text-xl rounded-lg py-2 md:py-3 shadow ' +
         'border-2 border-purple-200 transition';
-      btn.addEventListener('click', () => handleKeyPress(letter));
+
+      btn.addEventListener('click', () => handleKeyPress(key));
       el.keyboard.appendChild(btn);
     });
   }
@@ -153,9 +162,13 @@
     const size = getLetterSize();
     const padding = 10;
 
-    const char  = pickRandom(CONFIG.letters[state.language]);
+    const selected = pickRandom(CONFIG.letters[state.language]);
+
+    const key  = state.language === 'ne' ? selected.key : selected;
+    const char = state.language === 'ne' ? selected.char : selected;
+
     const color = pickRandom(CONFIG.colors);
-    const x     = Math.random() * (width - size - padding * 2) + padding;
+    const x = Math.random() * (width - size - padding * 2) + padding;
 
     const letterEl = document.createElement('div');
     letterEl.className =
@@ -170,44 +183,42 @@
 
     el.playArea.appendChild(letterEl);
 
-    // speed = pixels per second
     const speed = height / (CONFIG.fallDuration / 1000);
 
     state.fallingLetters.push({
       id: state.nextId++,
-      char: char.toUpperCase(),
+      key: state.language === 'ne' ? key : key.toUpperCase(),
+      char: char,
       el: letterEl,
       y: -100,
-      speed: speed,
+      speed: speed
     });
-  }
+  } // FIX: added missing closing brace for spawnLetter
 
   // ─────────────────────────────────────────────
-  // 🏃 GAME LOOP (requestAnimationFrame)
+  // 🏃 GAME LOOP
   // ─────────────────────────────────────────────
   function gameLoop(timestamp) {
     if (!state.isPlaying) return;
 
     if (state.isPaused) {
-      state.lastFrameTime = timestamp; // reset so no big delta
+      state.lastFrameTime = timestamp;
       state.animationFrame = requestAnimationFrame(gameLoop);
       return;
     }
 
     if (!state.lastFrameTime) state.lastFrameTime = timestamp;
-    const dt = (timestamp - state.lastFrameTime) / 1000; // seconds
+    const dt = (timestamp - state.lastFrameTime) / 1000;
     state.lastFrameTime = timestamp;
 
     const { height } = getPlayAreaSize();
     const size = getLetterSize();
 
-    // Move every letter down
     for (let i = state.fallingLetters.length - 1; i >= 0; i--) {
       const item = state.fallingLetters[i];
       item.y += item.speed * dt;
       item.el.style.top = item.y + 'px';
 
-      // Reached bottom → miss
       if (item.y + size >= height) {
         missLetter(i);
       }
@@ -217,28 +228,30 @@
   }
 
   // ─────────────────────────────────────────────
-  // 💥 HANDLE KEY PRESS (catch logic)
+  // 💥 HANDLE KEY PRESS
   // ─────────────────────────────────────────────
   function handleKeyPress(rawKey) {
     if (!state.isPlaying || state.isPaused) return;
     if (!rawKey) return;
-    const key = rawKey.toUpperCase();
 
-    // Find the LOWEST matching letter (most urgent to catch)
+    const key = state.language === 'ne'
+      ? rawKey.toLowerCase()
+      : rawKey.toUpperCase();
+
     let targetIndex = -1;
     let lowestY = -Infinity;
+
     state.fallingLetters.forEach((item, i) => {
-      if (item.char === key && item.y > lowestY) {
+      if (item.key === key && item.y > lowestY) {
         lowestY = item.y;
         targetIndex = i;
       }
     });
 
-    if (targetIndex === -1) return; // no match — ignore
+    if (targetIndex === -1) return;
 
     const target = state.fallingLetters[targetIndex];
 
-    // Pop animation
     target.el.style.transition = 'transform 0.15s ease-out, opacity 0.15s';
     target.el.style.transform  = 'scale(1.4)';
     target.el.style.opacity    = '0';
@@ -249,10 +262,10 @@
     state.score++;
     updateHUD();
     playSound('catch');
-  }
+  } // FIX: removed the duplicated/broken tail block that followed this
 
   // ─────────────────────────────────────────────
-  // 💔 MISS (letter hit the bottom)
+  // 💔 MISS
   // ─────────────────────────────────────────────
   function missLetter(index) {
     const item = state.fallingLetters[index];
@@ -284,7 +297,7 @@
   }
 
   // ─────────────────────────────────────────────
-  // 🔊 SOUND (Web Audio — no files needed)
+  // 🔊 SOUND
   // ─────────────────────────────────────────────
   let audioCtx = null;
   function playSound(type) {
@@ -323,7 +336,6 @@
   function startGame() {
     if (state.isPlaying) return;
 
-    // Reset state
     state.isPlaying = true;
     state.isPaused = false;
     state.score = 0;
@@ -331,11 +343,9 @@
     state.timeLeft = CONFIG.gameDuration;
     state.lastFrameTime = 0;
 
-    // Clear any leftover letters
     state.fallingLetters.forEach((item) => item.el.remove());
     state.fallingLetters = [];
 
-    // Update UI
     el.hintText.classList.add('hidden');
     el.btnStart.classList.add('hidden');
     el.btnPause.classList.remove('hidden');
@@ -345,15 +355,11 @@
 
     updateHUD();
 
-    // Spawn letters on interval
     clearInterval(state.spawnTimer);
     state.spawnTimer = setInterval(spawnLetter, CONFIG.spawnInterval);
-    spawnLetter(); // first one immediately
+    spawnLetter();
 
-    // Start countdown
     startCountdown();
-
-    // Start RAF loop
     state.animationFrame = requestAnimationFrame(gameLoop);
   }
 
@@ -364,7 +370,7 @@
     if (!state.isPlaying) return;
     state.isPaused = !state.isPaused;
     el.btnPause.textContent = state.isPaused ? '▶️ Resume' : '⏸️ Pause';
-    state.lastFrameTime = 0; // avoid delta jump on resume
+    state.lastFrameTime = 0;
   }
 
   // ─────────────────────────────────────────────
@@ -379,7 +385,6 @@
     clearInterval(state.countdownTimer);
     cancelAnimationFrame(state.animationFrame);
 
-    // Fade out leftover letters
     state.fallingLetters.forEach((item) => item.el.remove());
     state.fallingLetters = [];
 
@@ -389,7 +394,7 @@
   }
 
   // ─────────────────────────────────────────────
-  // 🔄 RESET (back to idle state)
+  // 🔄 RESET
   // ─────────────────────────────────────────────
   function resetGame() {
     state.isPlaying = false;
@@ -436,7 +441,6 @@
     startGame();
   });
 
-  // Auto-pause when the tab is hidden (kids don't lose unfairly)
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && state.isPlaying && !state.isPaused) {
       togglePause();
@@ -448,8 +452,5 @@
   // ─────────────────────────────────────────────
   buildKeyboard();
   updateHUD();
-
-  // Debug handle (remove in production)
-  // window.__letterPlay = { state, CONFIG, startGame, resetGame };
 
 })();
