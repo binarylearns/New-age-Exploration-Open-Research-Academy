@@ -16,7 +16,7 @@ urlpatterns = [
 
     path("english_typing/", views.english_typing, name="english_typing"),
     path("my-tasks/", views.class_tasks, name="class_tasks"),
-
+    path("class1/letter_play/", views.letter_play, name="letter_play"),
 
 
 

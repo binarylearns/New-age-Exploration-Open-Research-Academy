@@ -1,15 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎈 Kids Lab Sandbox — Class 1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Fredoka', sans-serif; }
+    .card-hover:hover { transform: translateY(-8px) scale(1.03); }
+    .card-hover { transition: all 0.3s ease; }
+    @keyframes bounce-slow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .bounce-slow { animation: bounce-slow 2.5s infinite; }
+  </style>
 </head>
-<body>
-    
-Welcome to class 1
+<body class="min-h-screen bg-gradient-to-br from-sky-200 via-pink-100 to-yellow-100">
 
+  <!-- HEADER -->
+  <header class="text-center pt-8 pb-4 px-4">
+    <h1 class="text-4xl md:text-6xl font-bold text-purple-700 drop-shadow-md">
+      🎈 My Computer Playground 🎈
+    </h1>
+    <p class="mt-2 text-lg text-purple-500 font-semibold">Class 1 • Let's Learn & Play!</p>
+  </header>
 
+  <!-- AVATAR / PROGRESS -->
+  <div class="flex justify-center mb-6">
+    <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3">
+      <span class="text-3xl bounce-slow">🐱</span>
+      <div>
+        <p class="text-sm font-semibold text-gray-600">Hi, Friend!</p>
+        <p class="text-xs text-gray-400">⭐ 0 / 6 Stars</p>
+      </div>
+    </div>
+  </div>
 
+  <!-- MODULE GRID -->
+  <main class="max-w-6xl mx-auto px-4 pb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+<!-- 1. Letter Play -->
+<a href="{% url 'letter_play' %}"
+   class="card-hover bg-white rounded-3xl shadow-xl p-6 text-center border-4 border-pink-300 block">
+
+    <div class="text-6xl mb-3">🔤</div>
+
+    <h2 class="text-2xl font-bold text-pink-600">
+        Letter Play
+    </h2>
+
+    <p class="text-sm text-gray-500 mt-1">
+        क ख ग + A B C — tap to hear!
+    </p>
+
+    <span class="inline-block mt-4 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded-full shadow">
+        ▶ Play
+    </span>
+</a>
+
+      <!-- 2. Typing Fun -->
+      <a href="#" class="card-hover bg-white rounded-3xl shadow-xl p-6 text-center border-4 border-blue-300">
+        <div class="text-6xl mb-3">⌨️</div>
+        <h2 class="text-2xl font-bold text-blue-600">Typing Fun</h2>
+        <p class="text-sm text-gray-500 mt-1">Catch falling letters!</p>
+        <button class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow">
+          ▶ Play
+        </button>
+      </a>
+
+      <!-- 3. Story Corner -->
+      <a href="#" class="card-hover bg-white rounded-3xl shadow-xl p-6 text-center border-4 border-yellow-300">
+        <div class="text-6xl mb-3">📚</div>
+        <h2 class="text-2xl font-bold text-yellow-600">Story Corner</h2>
+        <p class="text-sm text-gray-500 mt-1">Listen to fun picture stories</p>
+        <button class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-full shadow">
+          ▶ Listen
+        </button>
+      </a>
+
+      <!-- 4. Computer Parts -->
+      <a href="#" class="card-hover bg-white rounded-3xl shadow-xl p-6 text-center border-4 border-green-300">
+        <div class="text-6xl mb-3">🖱️</div>
+        <h2 class="text-2xl font-bold text-green-600">Computer Parts</h2>
+        <p class="text-sm text-gray-500 mt-1">Tap mouse, monitor, keyboard!</p>
+        <button class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full shadow">
+          ▶ Explore
+        </button>
+      </a>
+
+      <!-- 5. Block Coding -->
+      <a href="#" class="card-hover bg-white rounded-3xl shadow-xl p-6 text-center border-4 border-purple-300">
+        <div class="text-6xl mb-3">🧩</div>
+        <h2 class="text-2xl font-bold text-purple-600">Block Coding</h2>
+        <p class="text-sm text-gray-500 mt-1">Move the cat with blocks!</p>
+        <button class="mt-4 bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-full shadow">
+          ▶ Code
+        </button>
+      </a>
+
+      <!-- 6. Safe Internet -->
+      <a href="#" class="card-hover bg-white rounded-3xl shadow-xl p-6 text-center border-4 border-red-300">
+        <div class="text-6xl mb-3">🛡️</div>
+        <h2 class="text-2xl font-bold text-red-500">Safe Internet</h2>
+        <p class="text-sm text-gray-500 mt-1">Good click 👍 or bad click 👎?</p>
+        <button class="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow">
+          ▶ Play
+        </button>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="text-center pb-8 text-purple-400 text-sm font-semibold">
+    Made with 💜 for little learners
+  </footer>
 </body>
 </html>

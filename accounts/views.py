@@ -117,3 +117,16 @@ def class_tasks(request):
     template_name = f"tasks/class{class_number}.html"
 
     return render(request, template_name)
+
+
+
+# =========================
+# Letter Play codes
+# =========================
+
+@login_required
+def letter_play(request):
+    return render(
+        request,
+        "class1_modules/letterplay.html"
+    )
