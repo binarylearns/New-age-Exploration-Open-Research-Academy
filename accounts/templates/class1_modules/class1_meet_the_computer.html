@@ -1,0 +1,473 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Module 1 · Meet the Computer </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Quicksand', sans-serif; }
+
+    body {
+      background: linear-gradient(145deg, #fdf6ed 0%, #f3ede3 100%);
+      min-height: 100vh;
+    }
+
+    /* Slide transition base — JS will toggle .active */
+    .slide {
+      display: none;
+      animation: fadeSlide 0.35s ease both;
+    }
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Big friendly arrow buttons */
+    .nav-arrow {
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .nav-arrow:hover  { transform: scale(1.08); }
+    .nav-arrow:active { transform: scale(0.94); }
+    .nav-arrow:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Dot indicators */
+    .dot {
+      width: 12px; height: 12px;
+      border-radius: 999px;
+      background: #d1d5db;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .dot.active {
+      width: 32px;
+      background: #6366f1;
+    }
+
+    /* Interactive hotspot base (for parts to tap) */
+    .hotspot {
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .hotspot:hover  { transform: scale(1.1); filter: drop-shadow(0 0 12px #fbbf24); }
+    .hotspot:active { transform: scale(0.95); }
+
+    /* Pulsing ring to hint "tap me" */
+    @keyframes pulseRing {
+      0%   { box-shadow: 0 0 0 0 rgba(99,102,241,0.5); }
+      70%  { box-shadow: 0 0 0 14px rgba(99,102,241,0); }
+      100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+    }
+    .pulse-ring { animation: pulseRing 2s infinite; border-radius: 999px; }
+
+    /* Speech bubble */
+    .speech-bubble {
+      position: relative;
+      background: #fff;
+      border-radius: 1.5rem;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.12);
+      border: 2px solid #e0e7ff;
+    }
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -12px; left: 40px;
+      width: 0; height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 12px solid #fff;
+      filter: drop-shadow(0 2px 0 #e0e7ff);
+    }
+
+    /* Progress bar fill */
+    .progress-fill {
+      transition: width 0.35s ease;
+    }
+
+    /* Play button pulse */
+    @keyframes softPulse {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.06); }
+    }
+    .pulse-play { animation: softPulse 2.2s infinite; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ============ HEADER ============ -->
+  <header class="w-full max-w-5xl mx-auto px-4 pt-6 flex items-center justify-between">
+    <a href="{% url 'class1_computer_parts' %}"
+       class="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-4 py-2 font-bold text-indigo-600 shadow-sm hover:bg-indigo-50 hover:border-indigo-400 transition">
+      <span class="text-lg">←</span> Back
+    </a>
+
+    <div class="text-right">
+      <p class="text-xs font-semibold text-indigo-400 uppercase tracking-wide">Class 1 · Module 1</p>
+      <h1 class="text-xl md:text-2xl font-bold text-indigo-800">Meet the Computer</h1>
+    </div>
+  </header>
+
+  <!-- ============ PROGRESS BAR ============ -->
+  <div class="w-full max-w-4xl mx-auto px-4 mt-4">
+    <div class="flex items-center justify-between text-xs font-semibold text-indigo-500 mb-1">
+      <span>Progress</span>
+      <span id="progressLabel">Slide 1 of 10</span>
+    </div>
+    <div class="h-3 w-full bg-indigo-100 rounded-full overflow-hidden">
+      <div id="progressFill" class="progress-fill h-full bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full" style="width: 10%;"></div>
+    </div>
+  </div>
+
+  <!-- ============ SLIDE CONTAINER ============ -->
+  <main class="flex-1 w-full max-w-4xl mx-auto px-4 py-6 flex flex-col">
+
+    <!-- Card shell -->
+    <div class="relative flex-1 bg-white/95 rounded-[2.5rem] shadow-xl border border-white/70 p-6 md:p-10 flex flex-col min-h-[520px]">
+
+      <!-- ==================== SLIDE 1: Welcome ==================== -->
+      <section class="slide active flex-1" data-slide="1">
+        <div class="flex-1 flex flex-col items-center justify-center text-center">
+          <div class="text-7xl md:text-8xl mb-4 bounce-slow">👋</div>
+          <h2 class="text-3xl md:text-4xl font-bold text-indigo-800 mb-3">
+            Hello,  {{ request.user.username }}
+          </h2>
+          <p class="text-lg text-gray-600 max-w-md">
+            Today we're going to meet a very special machine — the <strong class="text-indigo-600">computer</strong>!
+          </p>
+          <div class="mt-6 speech-bubble max-w-sm">
+            <p class="text-indigo-700 font-semibold">
+              🎤 Tap the arrow to begin your adventure!
+            </p>
+          </div>
+        </div>
+        <div class="mt-4 flex justify-center">
+          <button class="pulse-play bg-indigo-500 hover:bg-indigo-600 text-white font-bold text-lg px-8 py-3 rounded-full shadow-lg transition">
+            ▶ Start Learning
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 2: What is a Computer? ==================== -->
+      <section class="slide flex-1" data-slide="2">
+        <div class="flex-1 flex flex-col items-center justify-center text-center">
+          <div class="text-7xl mb-4">🤖</div>
+          <h2 class="text-3xl font-bold text-indigo-800 mb-3">What is a Computer?</h2>
+          <p class="text-lg text-gray-600 max-w-lg mb-4">
+            A computer is a <strong class="text-indigo-600">machine</strong> that helps us do many things — like drawing, writing, playing games, and watching videos!
+          </p>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2 w-full max-w-lg">
+            <div class="bg-pink-50 rounded-2xl p-3 flex flex-col items-center hover:scale-105 transition cursor-pointer">
+              <span class="text-3xl">🎨</span><span class="text-xs font-semibold text-pink-700 mt-1">Draw</span>
+            </div>
+            <div class="bg-blue-50 rounded-2xl p-3 flex flex-col items-center hover:scale-105 transition cursor-pointer">
+              <span class="text-3xl">✏️</span><span class="text-xs font-semibold text-blue-700 mt-1">Write</span>
+            </div>
+            <div class="bg-amber-50 rounded-2xl p-3 flex flex-col items-center hover:scale-105 transition cursor-pointer">
+              <span class="text-3xl">🎮</span><span class="text-xs font-semibold text-amber-700 mt-1">Play</span>
+            </div>
+            <div class="bg-emerald-50 rounded-2xl p-3 flex flex-col items-center hover:scale-105 transition cursor-pointer">
+              <span class="text-3xl">🎬</span><span class="text-xs font-semibold text-emerald-700 mt-1">Watch</span>
+            </div>
+          </div>
+          <p class="text-sm text-gray-400 mt-4">👆 (JS: make each tile play a small sound or animation)</p>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 3: Meet the Monitor ==================== -->
+      <section class="slide flex-1" data-slide="3">
+        <div class="flex-1 grid md:grid-cols-2 gap-6 items-center">
+          <div class="flex items-center justify-center">
+            <div class="text-[10rem] md:text-[12rem] leading-none hotspot" data-part="monitor">🖥️</div>
+          </div>
+          <div>
+            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full mb-2">Part 1 of 5</span>
+            <h2 class="text-3xl font-bold text-blue-800 mb-2">The Monitor</h2>
+            <p class="text-gray-600 text-lg mb-4">
+              The monitor is like the computer's <strong class="text-blue-600">face</strong>. It shows pictures, words, and videos!
+            </p>
+            <div class="speech-bubble">
+              <p class="text-blue-700 font-semibold">🎤 "I show you everything on the screen!"</p>
+            </div>
+            {% comment %} <button class="mt-5 bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-2.5 rounded-full shadow transition">
+              🔊 Hear the Name
+            </button> {% endcomment %}
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 4: Meet the Keyboard ==================== -->
+      <section class="slide flex-1" data-slide="4">
+        <div class="flex-1 grid md:grid-cols-2 gap-6 items-center">
+          <div class="flex items-center justify-center">
+            <div class="text-[10rem] md:text-[12rem] leading-none hotspot" data-part="keyboard">⌨️</div>
+          </div>
+          <div>
+            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mb-2">Part 2 of 5</span>
+            <h2 class="text-3xl font-bold text-amber-800 mb-2">The Keyboard</h2>
+            <p class="text-gray-600 text-lg mb-4">
+              The keyboard has many <strong class="text-amber-600">keys</strong> with letters and numbers. We use it to type words!
+            </p>
+            <div class="speech-bubble">
+              <p class="text-amber-700 font-semibold">🎤 "Tap me to write letters and numbers!"</p>
+            </div>
+            {% comment %} <button class="mt-5 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-2.5 rounded-full shadow transition">
+              🔊 Hear the Name
+            </button> {% endcomment %}
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 5: Meet the Mouse ==================== -->
+      <section class="slide flex-1" data-slide="5">
+        <div class="flex-1 grid md:grid-cols-2 gap-6 items-center">
+          <div class="flex items-center justify-center">
+            <div class="text-[10rem] md:text-[12rem] leading-none hotspot" data-part="mouse">🖱️</div>
+          </div>
+          <div>
+            <span class="inline-block bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full mb-2">Part 3 of 5</span>
+            <h2 class="text-3xl font-bold text-purple-800 mb-2">The Mouse</h2>
+            <p class="text-gray-600 text-lg mb-4">
+              The mouse helps us <strong class="text-purple-600">point and click</strong> on things on the screen. It's small and fits in your hand!
+            </p>
+            <div class="speech-bubble">
+              <p class="text-purple-700 font-semibold">🎤 "Move me around and click to choose!"</p>
+            </div>
+            {% comment %} <button class="mt-5 bg-purple-500 hover:bg-purple-600 text-white font-bold px-6 py-2.5 rounded-full shadow transition">
+              🔊 Hear the Name
+            </button> {% endcomment %}
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 6: Meet the System Unit ==================== -->
+      <section class="slide flex-1" data-slide="6">
+        <div class="flex-1 grid md:grid-cols-2 gap-6 items-center">
+          <div class="flex items-center justify-center">
+            <div class="text-[10rem] md:text-[12rem] leading-none hotspot" data-part="system">📀</div>
+          </div>
+          <div>
+            <span class="inline-block bg-slate-200 text-slate-800 text-xs font-bold px-3 py-1 rounded-full mb-2">Part 4 of 5</span>
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">The System Unit</h2>
+            <p class="text-gray-600 text-lg mb-4">
+              The system unit is the <strong class="text-slate-700">brain box</strong>! It has all the important parts inside that make the computer work.
+            </p>
+            <div class="speech-bubble">
+              <p class="text-slate-700 font-semibold">🎤 "I'm the big box that thinks for the computer!"</p>
+            </div>
+            {% comment %} <button class="mt-5 bg-slate-600 hover:bg-slate-700 text-white font-bold px-6 py-2.5 rounded-full shadow transition">
+              🔊 Hear the Name
+            </button> {% endcomment %}
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 7: Meet the Speakers ==================== -->
+      <section class="slide flex-1" data-slide="7">
+        <div class="flex-1 grid md:grid-cols-2 gap-6 items-center">
+          <div class="flex items-center justify-center">
+            <div class="text-[10rem] md:text-[12rem] leading-none hotspot" data-part="speakers">🔊</div>
+          </div>
+          <div>
+            <span class="inline-block bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full mb-2">Part 5 of 5</span>
+            <h2 class="text-3xl font-bold text-rose-700 mb-2">The Speakers</h2>
+            <p class="text-gray-600 text-lg mb-4">
+              The speakers make <strong class="text-rose-600">sound</strong>! We use them to hear music, videos, and voices.
+            </p>
+            <div class="speech-bubble">
+              <p class="text-rose-700 font-semibold">🎤 "Turn me on to hear fun sounds!"</p>
+            </div>
+            {% comment %} <button class="mt-5 bg-rose-500 hover:bg-rose-600 text-white font-bold px-6 py-2.5 rounded-full shadow transition">
+              🔊 Hear the Name
+            </button> {% endcomment %}
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 8: Tap the Parts! (Interactive) ==================== -->
+      <section class="slide flex-1" data-slide="8">
+        <div class="flex-1 flex flex-col">
+          <div class="text-center mb-4">
+            <h2 class="text-3xl font-bold text-indigo-800">Tap the Parts!</h2>
+            <p class="text-gray-600">Tap each part on the computer below to hear its name.</p>
+          </div>
+
+          <!-- Simple computer scene -->
+          <div class="flex-1 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-6 flex flex-wrap items-center justify-around gap-6 relative">
+            <div class="hotspot pulse-ring p-3 bg-white rounded-2xl shadow-md" data-part="monitor">
+              <div class="text-6xl">🖥️</div>
+              <p class="text-xs font-bold text-center text-gray-600 mt-1">Monitor</p>
+            </div>
+            <div class="hotspot pulse-ring p-3 bg-white rounded-2xl shadow-md" data-part="system">
+              <div class="text-6xl">📀</div>
+              <p class="text-xs font-bold text-center text-gray-600 mt-1">System Unit</p>
+            </div>
+            <div class="hotspot pulse-ring p-3 bg-white rounded-2xl shadow-md" data-part="keyboard">
+              <div class="text-6xl">⌨️</div>
+              <p class="text-xs font-bold text-center text-gray-600 mt-1">Keyboard</p>
+            </div>
+            <div class="hotspot pulse-ring p-3 bg-white rounded-2xl shadow-md" data-part="mouse">
+              <div class="text-6xl">🖱️</div>
+              <p class="text-xs font-bold text-center text-gray-600 mt-1">Mouse</p>
+            </div>
+            <div class="hotspot pulse-ring p-3 bg-white rounded-2xl shadow-md" data-part="speakers">
+              <div class="text-6xl">🔊</div>
+              <p class="text-xs font-bold text-center text-gray-600 mt-1">Speakers</p>
+            </div>
+          </div>
+
+          <!-- Feedback area -->
+          <div id="tapFeedback" class="mt-4 text-center text-lg font-semibold text-indigo-700 min-h-[40px]">
+            👆 Tap a part above!
+          </div>
+          <p class="text-xs text-center text-gray-400 mt-1">(JS: hook click handlers on each .hotspot and speak the name)</p>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 9: Match the Emoji! ==================== -->
+      <section class="slide flex-1" data-slide="9">
+        <div class="flex-1 flex flex-col">
+          <div class="text-center mb-4">
+            <h2 class="text-3xl font-bold text-indigo-800">Match the Emoji!</h2>
+            <p class="text-gray-600">Which emoji matches the part?</p>
+          </div>
+
+          <div class="flex-1 flex flex-col items-center justify-center gap-6">
+            <div class="text-7xl" id="matchTarget">🖥️</div>
+            <div class="flex flex-wrap justify-center gap-4">
+              <button class="match-choice bg-white border-2 border-indigo-200 rounded-2xl px-6 py-4 text-2xl font-bold hover:border-indigo-400 hover:scale-105 transition">⌨️</button>
+              <button class="match-choice bg-white border-2 border-indigo-200 rounded-2xl px-6 py-4 text-2xl font-bold hover:border-indigo-400 hover:scale-105 transition">🖱️</button>
+              <button class="match-choice bg-white border-2 border-indigo-200 rounded-2xl px-6 py-4 text-2xl font-bold hover:border-indigo-400 hover:scale-105 transition">🖥️</button>
+              <button class="match-choice bg-white border-2 border-indigo-200 rounded-2xl px-6 py-4 text-2xl font-bold hover:border-indigo-400 hover:scale-105 transition">🔊</button>
+            </div>
+            <p class="text-sm text-gray-400">(JS: cycle target emoji, check answers, give feedback)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SLIDE 10: Great Job! ==================== -->
+      <section class="slide flex-1" data-slide="10">
+        <div class="flex-1 flex flex-col items-center justify-center text-center">
+          <div class="text-8xl mb-4 bounce-slow">🏆</div>
+          <h2 class="text-4xl font-bold text-indigo-800 mb-3">Great Job, Explorer!</h2>
+          <p class="text-lg text-gray-600 max-w-md mb-6">
+            You met all the computer parts! Now you know the <strong class="text-indigo-600">monitor</strong>, <strong class="text-amber-600">keyboard</strong>, <strong class="text-purple-600">mouse</strong>, <strong class="text-slate-700">system unit</strong>, and <strong class="text-rose-600">speakers</strong>!
+          </p>
+          <div class="flex gap-3 flex-wrap justify-center">
+            <button class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-8 py-3 rounded-full shadow-lg transition">
+              🔁 Play Again
+            </button>
+            <a href="{% url 'class1_computer_parts' %}" class="bg-white border-2 border-indigo-300 text-indigo-700 font-bold px-8 py-3 rounded-full shadow hover:bg-indigo-50 transition">
+              🏠 Back Home
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NAVIGATION ==================== -->
+      <div class="mt-6 flex items-center justify-between gap-4">
+
+        <!-- Previous arrow -->
+        <button id="prevBtn"
+                class="nav-arrow flex items-center gap-2 bg-white border-2 border-indigo-200 text-indigo-700 font-bold px-5 py-3 rounded-full shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                disabled>
+          <span class="text-xl">←</span>
+          <span class="hidden sm:inline">Back</span>
+        </button>
+
+        <!-- Dot indicators -->
+        <div id="dotsContainer" class="flex items-center gap-2 flex-wrap justify-center">
+          <!-- JS will generate dots -->
+        </div>
+
+        <!-- Next arrow -->
+        <button id="nextBtn"
+                class="nav-arrow flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-5 py-3 rounded-full shadow-md">
+          <span class="hidden sm:inline">Next</span>
+          <span class="text-xl">→</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Hint bar below card -->
+    <p class="text-center text-sm text-indigo-400 mt-3 font-semibold">
+      👆 Use the arrows or dots to move between slides
+    </p>
+  </main>
+
+  <!-- ============ MINIMAL JS: slide navigation ============ -->
+  <script>
+    (function () {
+      const slides    = document.querySelectorAll('.slide');
+      const total     = slides.length;
+      const prevBtn   = document.getElementById('prevBtn');
+      const nextBtn   = document.getElementById('nextBtn');
+      const dotsBox   = document.getElementById('dotsContainer');
+      const progress  = document.getElementById('progressFill');
+      const label     = document.getElementById('progressLabel');
+      let current     = 0;
+
+      // Build dots
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'dot';
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsBox.appendChild(dot);
+      });
+      const dots = document.querySelectorAll('.dot');
+
+      function goTo(index) {
+        if (index < 0 || index >= total) return;
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+
+        current = index;
+
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+
+        // Buttons
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === total - 1;
+
+        // Progress
+        const pct = ((current + 1) / total) * 100;
+        progress.style.width = pct + '%';
+        label.textContent = `Slide ${current + 1} of ${total}`;
+      }
+
+      prevBtn.addEventListener('click', () => goTo(current - 1));
+      nextBtn.addEventListener('click', () => goTo(current + 1));
+
+      // Keyboard arrows
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') goTo(current + 1);
+        if (e.key === 'ArrowLeft')  goTo(current - 1);
+      });
+
+      // Init
+      goTo(0);
+    })();
+  </script>
+
+
+
+{% comment %} loading the javascript for meet the computer  {% endcomment %}
+
+  <script src="{% static 'accounts/js/class1_meet_computer.js' %}"></script>
+</body>
+</html>

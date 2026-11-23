@@ -17,6 +17,12 @@ urlpatterns = [
     path("english_typing/", views.english_typing, name="english_typing"),
     path("my-tasks/", views.class_tasks, name="class_tasks"),
     path("class1/letter_play/", views.letter_play, name="letter_play"),
+    path("class1/computer-parts/", views.class1_computer_parts,name="class1_computer_parts"),
+    path("class1/meet-the-computer/", views.class1_meet_the_computer,name="class1_meet_the_computer"),
+    path("class1/know-the-computer/", views.class1_know_your_computer,name="class1_know_your_computer"),
+    path("class1/drag-and-drop/", views.class1_drag_and_drop,name="class1_drag_and_drop"),
+
+
 
 
 

@@ -96,6 +96,8 @@ def english_typing(request):
     )
 
 
+
+
 # =========================
 # CLASS-WISE LESSONS
 # =========================
@@ -129,4 +131,53 @@ def letter_play(request):
     return render(
         request,
         "class1_modules/letterplay.html"
+    )
+
+
+
+
+# =========================
+# Class 1 Computer Parts 
+# =========================
+
+
+@login_required
+def class1_computer_parts(request):
+    return render(
+        request,
+        "class1_modules/class1_computer_parts.html"
+    )
+
+
+
+# =========================
+# Meet the computer 
+# =========================
+
+
+@login_required
+def class1_meet_the_computer(request):
+    return render(
+        request,
+        "class1_modules/class1_meet_the_computer.html"
+    )
+
+
+@login_required
+def class1_know_your_computer(request):
+    return render(
+        request,
+        "class1_modules/class1_know_your_computer.html"
+    )
+
+
+# =========================
+# Class1 drag and drop to build the computer 
+# =========================
+
+@login_required
+def class1_drag_and_drop(request):
+    return render(
+        request,
+        "class1_modules/class1_drag_and_drop.html"
     )

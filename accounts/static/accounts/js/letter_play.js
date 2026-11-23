@@ -1,11 +1,6 @@
-// ============================================================
-// 🔤 LETTER PLAY — Class 1 Typing Game
-// ============================================================
-
 (function () {
   'use strict';
 
-  // FIX: Define PREETI_MAP BEFORE CONFIG so it's initialized first
   const PREETI_MAP = {
     's': 'क', 'v': 'ख', 'u': 'ग', '3': 'घ',
     'r': 'च', '5': 'छ', 'h': 'ज', '6': 'ट',
@@ -20,10 +15,13 @@
   const CONFIG = {
     gameDuration: 60,
     spawnInterval: 1400,
+    minSpawnInterval: 450,
     fallDuration: 6000,
+    minFallDuration: 2200,
     maxFallingLetters: 5,
     startingHearts: 3,
-    maxHearts: 5,
+    comboWindow: 2500,
+    comboBonusEvery: 5,
     letters: {
       en: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
       ne: Object.entries(PREETI_MAP).map(([key, char]) => ({ key, char }))
@@ -38,32 +36,33 @@
     ],
   };
 
-  // ─────────────────────────────────────────────
-  // 🧠 STATE
-  // ─────────────────────────────────────────────
   const state = {
     language: 'en',
+    playerName: 'Guest',
+playerId: null,
     score: 0,
     hearts: CONFIG.startingHearts,
     timeLeft: CONFIG.gameDuration,
     isPlaying: false,
     isPaused: false,
     fallingLetters: [],
-    spawnTimer: null,
     countdownTimer: null,
     animationFrame: null,
     lastFrameTime: 0,
     nextId: 0,
+    combo: 0,
+    maxCombo: 0,
+    lastCatchTime: 0,
+    nextSpawnAt: 0,       // timestamp when next spawn should happen
   };
 
-  // ─────────────────────────────────────────────
-  // 🎯 DOM REFS
-  // ─────────────────────────────────────────────
   const el = {
     playArea:      document.getElementById('playArea'),
     score:         document.getElementById('score'),
+    
     timer:         document.getElementById('timer'),
     hearts:        document.getElementById('hearts'),
+    comboValue:    document.getElementById('comboValue'),
     hintText:      document.getElementById('hintText'),
     btnEnglish:    document.getElementById('btnEnglish'),
     btnNepali:     document.getElementById('btnNepali'),
@@ -73,17 +72,14 @@
     btnPlayAgain:  document.getElementById('btnPlayAgain'),
     gameOverModal: document.getElementById('gameOverModal'),
     finalScore:    document.getElementById('finalScore'),
-    keyboard:      document.getElementById('keyboard'),
+    finalCombo:    document.getElementById('finalCombo'),
   };
 
-  // ─────────────────────────────────────────────
-  // 🛠️ HELPERS
-  // ─────────────────────────────────────────────
   const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   function getPlayAreaSize() {
-    const rect = el.playArea.getBoundingClientRect();
-    return { width: rect.width, height: rect.height };
+    const r = el.playArea.getBoundingClientRect();
+    return { width: r.width, height: r.height };
   }
 
   function getLetterSize() {
@@ -93,66 +89,51 @@
   function updateHUD() {
     if (el.score)  el.score.textContent = state.score;
     if (el.timer)  el.timer.textContent = state.timeLeft;
-    if (el.hearts) {
-      el.hearts.textContent = state.hearts > 0
-        ? '❤️'.repeat(state.hearts)
-        : '💔';
-    }
+    if (el.hearts) el.hearts.textContent = state.hearts > 0 ? '❤️'.repeat(state.hearts) : '💔';
   }
 
-  // ─────────────────────────────────────────────
-  // 📚 LANGUAGE SWITCH
-  // ─────────────────────────────────────────────
+  function updateComboHUD() {
+    if (!el.comboValue) return;
+    el.comboValue.textContent = state.combo;
+    el.comboValue.classList.remove('combo-pop');
+    void el.comboValue.offsetWidth;
+    el.comboValue.classList.add('combo-pop');
+  }
+
+  function getCurrentSpawnInterval() {
+    const progress = 1 - (state.timeLeft / CONFIG.gameDuration);
+    return Math.max(CONFIG.minSpawnInterval,
+      CONFIG.spawnInterval - (CONFIG.spawnInterval - CONFIG.minSpawnInterval) * progress);
+  }
+
+  function showComboPopup(text, colorClass) {
+    const p = document.createElement('div');
+    p.textContent = text;
+    p.className =
+      'absolute left-1/2 top-1/3 -translate-x-1/2 text-4xl md:text-5xl ' +
+      'font-extrabold drop-shadow-lg pointer-events-none z-50 ' +
+      (colorClass || 'text-orange-500');
+    p.style.animation = 'comboFloat 1s ease-out forwards';
+    el.playArea.appendChild(p);
+    setTimeout(() => p.remove(), 1000);
+  }
+
   function setLanguage(lang) {
     if (state.isPlaying) return;
     state.language = lang;
-
-    const active   = ['bg-purple-500', 'text-white'];
+    const active = ['bg-purple-500', 'text-white'];
     const inactive = ['bg-white', 'text-purple-600'];
-
     if (lang === 'en') {
-      el.btnEnglish.classList.remove(...inactive);
-      el.btnEnglish.classList.add(...active);
-      el.btnNepali.classList.remove(...active);
-      el.btnNepali.classList.add(...inactive);
+      el.btnEnglish.classList.remove(...inactive); el.btnEnglish.classList.add(...active);
+      el.btnNepali.classList.remove(...active);   el.btnNepali.classList.add(...inactive);
     } else {
-      el.btnNepali.classList.remove(...inactive);
-      el.btnNepali.classList.add(...active);
-      el.btnEnglish.classList.remove(...active);
-      el.btnEnglish.classList.add(...inactive);
+      el.btnNepali.classList.remove(...inactive);  el.btnNepali.classList.add(...active);
+      el.btnEnglish.classList.remove(...active);  el.btnEnglish.classList.add(...inactive);
     }
-    buildKeyboard();
   }
 
   // ─────────────────────────────────────────────
-  // 🎹 VIRTUAL KEYBOARD
-  // ─────────────────────────────────────────────
-  function buildKeyboard() {
-    if (!el.keyboard) return;
-    el.keyboard.innerHTML = '';
-
-    const letters = CONFIG.letters[state.language];
-
-    letters.forEach((letter) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-
-      const key = state.language === 'ne' ? letter.key : letter;
-      const label = state.language === 'ne' ? letter.char : letter;
-
-      btn.textContent = label;
-      btn.className =
-        'bg-white hover:bg-purple-100 active:bg-purple-300 text-purple-700 ' +
-        'font-bold text-lg md:text-xl rounded-lg py-2 md:py-3 shadow ' +
-        'border-2 border-purple-200 transition';
-
-      btn.addEventListener('click', () => handleKeyPress(key));
-      el.keyboard.appendChild(btn);
-    });
-  }
-
-  // ─────────────────────────────────────────────
-  // 🎈 SPAWN A FALLING LETTER
+  // SPAWN
   // ─────────────────────────────────────────────
   function spawnLetter() {
     if (!state.isPlaying || state.isPaused) return;
@@ -163,12 +144,12 @@
     const padding = 10;
 
     const selected = pickRandom(CONFIG.letters[state.language]);
-
     const key  = state.language === 'ne' ? selected.key : selected;
     const char = state.language === 'ne' ? selected.char : selected;
 
     const color = pickRandom(CONFIG.colors);
-    const x = Math.random() * (width - size - padding * 2) + padding;
+    const maxX = Math.max(padding, width - size - padding);
+    const x = Math.random() * (maxX - padding) + padding;
 
     const letterEl = document.createElement('div');
     letterEl.className =
@@ -180,10 +161,16 @@
     letterEl.style.left   = x + 'px';
     letterEl.style.top    = '-100px';
     letterEl.textContent  = char;
-
     el.playArea.appendChild(letterEl);
 
-    const speed = height / (CONFIG.fallDuration / 1000);
+    const progress = 1 - (state.timeLeft / CONFIG.gameDuration);
+    const fallSec    = CONFIG.fallDuration / 1000;
+    const minFallSec = CONFIG.minFallDuration / 1000;
+    const curFallSec = fallSec - (fallSec - minFallSec) * progress;
+
+    // SAFETY: if height or curFallSec is bad, force a sane speed
+    let speed = height / curFallSec;
+    if (!isFinite(speed) || speed <= 0) speed = 120; // px per second fallback
 
     state.fallingLetters.push({
       id: state.nextId++,
@@ -193,10 +180,10 @@
       y: -100,
       speed: speed
     });
-  } // FIX: added missing closing brace for spawnLetter
+  }
 
   // ─────────────────────────────────────────────
-  // 🏃 GAME LOOP
+  // GAME LOOP — also drives spawning now
   // ─────────────────────────────────────────────
   function gameLoop(timestamp) {
     if (!state.isPlaying) return;
@@ -208,27 +195,39 @@
     }
 
     if (!state.lastFrameTime) state.lastFrameTime = timestamp;
-    const dt = (timestamp - state.lastFrameTime) / 1000;
+    const dt = Math.min((timestamp - state.lastFrameTime) / 1000, 0.1);
     state.lastFrameTime = timestamp;
 
     const { height } = getPlayAreaSize();
     const size = getLetterSize();
 
+    // Move letters
     for (let i = state.fallingLetters.length - 1; i >= 0; i--) {
       const item = state.fallingLetters[i];
       item.y += item.speed * dt;
       item.el.style.top = item.y + 'px';
+      if (item.y + size >= height) missLetter(i);
+    }
 
-      if (item.y + size >= height) {
-        missLetter(i);
-      }
+    // Spawn on schedule (driven by rAF, not setTimeout)
+    if (timestamp >= state.nextSpawnAt) {
+      spawnLetter();
+      state.nextSpawnAt = timestamp + getCurrentSpawnInterval();
+    }
+
+    // Combo timeout
+    if (state.combo > 0 &&
+        performance.now() - state.lastCatchTime > CONFIG.comboWindow) {
+      if (state.combo >= 3) showComboPopup('⏱️ Combo ended', 'text-gray-500');
+      state.combo = 0;
+      updateComboHUD();
     }
 
     state.animationFrame = requestAnimationFrame(gameLoop);
   }
 
   // ─────────────────────────────────────────────
-  // 💥 HANDLE KEY PRESS
+  // KEY HANDLER
   // ─────────────────────────────────────────────
   function handleKeyPress(rawKey) {
     if (!state.isPlaying || state.isPaused) return;
@@ -251,32 +250,40 @@
     if (targetIndex === -1) return;
 
     const target = state.fallingLetters[targetIndex];
-
     target.el.style.transition = 'transform 0.15s ease-out, opacity 0.15s';
     target.el.style.transform  = 'scale(1.4)';
     target.el.style.opacity    = '0';
-
     setTimeout(() => target.el.remove(), 150);
     state.fallingLetters.splice(targetIndex, 1);
 
+    state.combo++;
+    state.maxCombo = Math.max(state.maxCombo, state.combo);
+    state.lastCatchTime = performance.now();
     state.score++;
-    updateHUD();
-    playSound('catch');
-  } // FIX: removed the duplicated/broken tail block that followed this
 
-  // ─────────────────────────────────────────────
-  // 💔 MISS
-  // ─────────────────────────────────────────────
+    if (state.combo % CONFIG.comboBonusEvery === 0) {
+      state.score += state.combo;
+      playSound('combo');
+      showComboPopup(`🔥 COMBO x${state.combo}!`);
+    }
+
+    updateHUD();
+    updateComboHUD();
+    playSound('catch');
+  }
+
   function missLetter(index) {
     const item = state.fallingLetters[index];
     if (!item) return;
-
     item.el.style.transition = 'opacity 0.3s';
     item.el.style.opacity = '0';
     setTimeout(() => item.el.remove(), 300);
     state.fallingLetters.splice(index, 1);
 
     state.hearts = Math.max(0, state.hearts - 1);
+    if (state.combo >= 3) showComboPopup('💔 Combo lost', 'text-red-500');
+    state.combo = 0;
+    updateComboHUD();
     updateHUD();
     playSound('miss');
 
@@ -284,7 +291,7 @@
   }
 
   // ─────────────────────────────────────────────
-  // ⏱️ COUNTDOWN
+  // COUNTDOWN
   // ─────────────────────────────────────────────
   function startCountdown() {
     clearInterval(state.countdownTimer);
@@ -297,53 +304,54 @@
   }
 
   // ─────────────────────────────────────────────
-  // 🔊 SOUND
+  // SOUND
   // ─────────────────────────────────────────────
   let audioCtx = null;
   function playSound(type) {
     try {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      const osc  = audioCtx.createOscillator();
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+      osc.connect(gain); gain.connect(audioCtx.destination);
 
       if (type === 'catch') {
-        osc.type = 'sine';
-        osc.frequency.value = 880;
+        osc.type = 'sine'; osc.frequency.value = 880;
         gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.15);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.15);
       } else if (type === 'miss') {
-        osc.type = 'sawtooth';
-        osc.frequency.value = 200;
+        osc.type = 'sawtooth'; osc.frequency.value = 200;
         gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.25);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+      } else if (type === 'combo') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
       }
-    } catch (e) {
-      /* audio not critical */
-    }
+    } catch (e) { /* ignore */ }
   }
 
   // ─────────────────────────────────────────────
-  // ▶️ START GAME
+  // START / PAUSE / END / RESET
   // ─────────────────────────────────────────────
   function startGame() {
     if (state.isPlaying) return;
-
     state.isPlaying = true;
     state.isPaused = false;
     state.score = 0;
     state.hearts = CONFIG.startingHearts;
     state.timeLeft = CONFIG.gameDuration;
     state.lastFrameTime = 0;
+    state.combo = 0;
+    state.maxCombo = 0;
+    state.lastCatchTime = 0;
+    state.nextSpawnAt = 0;
 
-    state.fallingLetters.forEach((item) => item.el.remove());
+    state.fallingLetters.forEach((it) => it.el.remove());
     state.fallingLetters = [];
 
     el.hintText.classList.add('hidden');
@@ -354,18 +362,12 @@
     el.gameOverModal.classList.add('hidden');
 
     updateHUD();
-
-    clearInterval(state.spawnTimer);
-    state.spawnTimer = setInterval(spawnLetter, CONFIG.spawnInterval);
-    spawnLetter();
+    updateComboHUD();
 
     startCountdown();
     state.animationFrame = requestAnimationFrame(gameLoop);
   }
 
-  // ─────────────────────────────────────────────
-  // ⏸️ PAUSE / RESUME
-  // ─────────────────────────────────────────────
   function togglePause() {
     if (!state.isPlaying) return;
     state.isPaused = !state.isPaused;
@@ -373,29 +375,20 @@
     state.lastFrameTime = 0;
   }
 
-  // ─────────────────────────────────────────────
-  // 🛑 END GAME
-  // ─────────────────────────────────────────────
   function endGame() {
     if (!state.isPlaying) return;
     state.isPlaying = false;
     state.isPaused = false;
-
-    clearInterval(state.spawnTimer);
     clearInterval(state.countdownTimer);
     cancelAnimationFrame(state.animationFrame);
-
-    state.fallingLetters.forEach((item) => item.el.remove());
+    state.fallingLetters.forEach((it) => it.el.remove());
     state.fallingLetters = [];
-
     el.finalScore.textContent = state.score;
+    if (el.finalCombo) el.finalCombo.textContent = state.maxCombo;
     el.gameOverModal.classList.remove('hidden');
     el.btnPause.classList.add('hidden');
   }
 
-  // ─────────────────────────────────────────────
-  // 🔄 RESET
-  // ─────────────────────────────────────────────
   function resetGame() {
     state.isPlaying = false;
     state.isPaused = false;
@@ -403,15 +396,18 @@
     state.hearts = CONFIG.startingHearts;
     state.timeLeft = CONFIG.gameDuration;
     state.lastFrameTime = 0;
+    state.combo = 0;
+    state.maxCombo = 0;
+    state.lastCatchTime = 0;
+    state.nextSpawnAt = 0;
 
-    clearInterval(state.spawnTimer);
     clearInterval(state.countdownTimer);
     cancelAnimationFrame(state.animationFrame);
-
-    state.fallingLetters.forEach((item) => item.el.remove());
+    state.fallingLetters.forEach((it) => it.el.remove());
     state.fallingLetters = [];
 
     updateHUD();
+    updateComboHUD();
     el.hintText.classList.remove('hidden');
     el.btnStart.classList.remove('hidden');
     el.btnPause.classList.add('hidden');
@@ -420,7 +416,7 @@
   }
 
   // ─────────────────────────────────────────────
-  // 🎧 EVENT BINDINGS
+  // EVENTS
   // ─────────────────────────────────────────────
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -436,21 +432,12 @@
   el.btnStart?.addEventListener('click',   startGame);
   el.btnPause?.addEventListener('click',   togglePause);
   el.btnReset?.addEventListener('click',   resetGame);
-  el.btnPlayAgain?.addEventListener('click', () => {
-    resetGame();
-    startGame();
-  });
+  el.btnPlayAgain?.addEventListener('click', () => { resetGame(); startGame(); });
 
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden && state.isPlaying && !state.isPaused) {
-      togglePause();
-    }
+    if (document.hidden && state.isPlaying && !state.isPaused) togglePause();
   });
 
-  // ─────────────────────────────────────────────
-  // 🚀 INIT
-  // ─────────────────────────────────────────────
-  buildKeyboard();
   updateHUD();
-
+  updateComboHUD();
 })();

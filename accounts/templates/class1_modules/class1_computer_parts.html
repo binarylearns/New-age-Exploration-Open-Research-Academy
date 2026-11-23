@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class 1 – Computer Lab · Module Dashboard</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Playful, readable font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Quicksand', sans-serif; }
+    body {
+      background: linear-gradient(145deg, #fdf6ed 0%, #f3ede3 100%);
+      min-height: 100vh;
+    }
+    .card-kid {
+      border-radius: 2rem;
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.12), 0 4px 8px -2px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(2px);
+    }
+    .card-kid:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 32px -12px rgba(0, 0, 0, 0.2);
+    }
+    .badge-module {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      border-radius: 40px;
+      padding: 0.25rem 0.9rem;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+      display: inline-block;
+    }
+    .emoji-big { font-size: 2.5rem; line-height: 1; }
+    /* subtle background pattern for the header */
+    .header-glow {
+      background: radial-gradient(circle at 20% 30%, #fff2d7 0%, transparent 60%),
+                  radial-gradient(circle at 80% 70%, #d9e8ff 0%, transparent 50%);
+    }
+    .module-hint {
+      font-size: 0.8rem;
+      color: #4b5563;
+      background: #f3f4f6;
+      padding: 0.4rem 0.8rem;
+      border-radius: 40px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body class="p-4 md:p-8 flex flex-col items-center">
+
+  <!-- HEADER -->
+  <header class="w-full max-w-7xl mb-8 text-center header-glow py-6 px-4 rounded-[3rem]">
+    <h1 class="text-5xl md:text-7xl font-bold text-indigo-800 tracking-tight drop-shadow-sm">
+      🖥️ Computer Lab <span class="text-amber-600">Dashboard</span>
+    </h1>
+    <p class="text-xl md:text-2xl text-indigo-900 mt-3 font-medium max-w-2xl mx-auto">
+      Everything a Class 1 explorer needs — tap a module to begin! ✨
+    </p>
+    <div class="flex flex-wrap justify-center gap-2 mt-4 text-sm">
+      <span class="bg-white/70 px-4 py-1 rounded-full font-semibold text-indigo-700">🧩 18 modules</span>
+      <span class="bg-white/70 px-4 py-1 rounded-full font-semibold text-emerald-700">👆 click & learn</span>
+      <span class="bg-white/70 px-4 py-1 rounded-full font-semibold text-amber-700">🎵 sounds & games</span>
+    </div>
+  </header>
+
+  <!-- MODULE GRID (all modules, names + description only) -->
+  <main class="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-6">
+
+    <!-- 1. Meet the Computer -->
+   <a href="{% url 'class1_meet_the_computer' %}"
+   class="card-kid bg-white/90 p-5 flex flex-col cursor-pointer block group
+          hover:-translate-y-1 hover:shadow-xl active:scale-[0.98]
+          transition-all duration-200 ring-0 focus:outline-none focus:ring-4 focus:ring-indigo-300">
+
+  <div class="flex items-center justify-between mb-2">
+    <span class="badge-module bg-indigo-100 text-indigo-800">Module 1</span>
+    <span class="text-3xl transition-transform duration-200 group-hover:scale-110">🖥️</span>
+  </div>
+
+  <h2 class="text-xl font-bold text-indigo-900">Meet the Computer [Fix the bugs]</h2>
+
+  <p class="text-gray-600 text-sm mt-1 flex-1">
+    Discover what a computer is, see its main parts, and tap each one to hear its name with friendly voice narration.
+  </p>
+
+  <div class="mt-3 flex items-center justify-between">
+    <span class="module-hint">🎤 Tap & listen · simple voice</span>
+    <span class="text-indigo-500 font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      Start →
+    </span>
+  </div>
+</a>
+
+   <!-- 2. Know Your Computer Parts -->
+<a href="{% url 'class1_know_your_computer' %}" class="block h-full">
+    <div class="card-kid bg-white/90 p-5 flex flex-col h-full min-h-[240px]">
+        <div class="flex items-center justify-between mb-2">
+            <span class="badge-module bg-emerald-100 text-emerald-800">Module 2</span>
+            <span class="text-3xl">🧩</span>
+        </div>
+
+        <h2 class="text-xl font-bold text-emerald-900">
+            Know Your Computer Parts [Add more fields here]
+        </h2>
+
+        <p class="text-gray-600 text-sm mt-1 flex-1">
+            Learn the monitor, keyboard, mouse, system unit and speakers — click a part to reveal its name, picture and purpose.
+        </p>
+
+        <div class="mt-3 module-hint">
+            👆 Click to reveal · picture + job
+        </div>
+    </div>
+</a>
+
+<!-- 3. Drag and Drop – Build Your Computer -->
+<a href="{% url 'class1_drag_and_drop' %}" class="block h-full">
+    <div class="card-kid bg-white/90 p-5 flex flex-col h-full min-h-[240px]">
+        <div class="flex items-center justify-between mb-2">
+            <span class="badge-module bg-amber-100 text-amber-800">Module 3</span>
+            <span class="text-3xl">🧱</span>
+        </div>
+
+        <h2 class="text-xl font-bold text-amber-900">
+            Drag & Drop – Build a Computer
+        </h2>
+
+        <p class="text-gray-600 text-sm mt-1 flex-1">
+            Drag the monitor, keyboard, mouse and system unit into the right spots on the desk. The most fun module!
+        </p>
+
+        <div class="mt-3 module-hint">
+            🖱️ Drag to correct position
+        </div>
+    </div>
+</a>
+
+
+    <!-- 4. Match the Part to Its Job -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-sky-100 text-sky-800">Module 4</span>
+        <span class="text-3xl">🔗</span>
+      </div>
+      <h2 class="text-xl font-bold text-sky-900">Match the Part to Its Job</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Connect each computer part to what it does. Monitor → shows pictures, Keyboard → typing, and more.
+      </p>
+      <div class="mt-3 module-hint">🧠 Match pairs · select answer</div>
+    </div>
+
+    <!-- 5. Computer Parts Quiz -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-violet-100 text-violet-800">Module 5</span>
+        <span class="text-3xl">❓</span>
+      </div>
+      <h2 class="text-xl font-bold text-violet-900">Computer Parts Quiz</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Simple questions with three big answer cards: Which part shows pictures? Which helps us type? Get encouraging feedback.
+      </p>
+      <div class="mt-3 module-hint">✅🌟 Choose & get cheered</div>
+    </div>
+
+    <!-- 6. Meet the Keyboard -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-rose-100 text-rose-800">Module 6</span>
+        <span class="text-3xl">⌨️</span>
+      </div>
+      <h2 class="text-xl font-bold text-rose-900">Meet the Keyboard</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Explore alphabet keys, number keys, spacebar, enter and backspace on a virtual keyboard — tap and see what happens.
+      </p>
+      <div class="mt-3 module-hint">🔤 Tap keys · spacebar moves words</div>
+    </div>
+
+    <!-- 7. Meet the Mouse -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-orange-100 text-orange-800">Module 7</span>
+        <span class="text-3xl">🖱️</span>
+      </div>
+      <h2 class="text-xl font-bold text-orange-900">Meet the Mouse</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Learn left click, right click, moving and scrolling. Play a mini game: move the pointer and click colourful objects.
+      </p>
+      <div class="mt-3 module-hint">🖱️ Move & click game</div>
+    </div>
+
+    <!-- 8. Computer Parts Treasure Hunt -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-lime-100 text-lime-800">Module 8</span>
+        <span class="text-3xl">🔍</span>
+      </div>
+      <h2 class="text-xl font-bold text-lime-900">Computer Parts Treasure Hunt</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        A computer lab scene is full of hidden parts. Find the keyboard, monitor, mouse and speakers by clicking them!
+      </p>
+      <div class="mt-3 module-hint">🔎 Find hidden objects</div>
+    </div>
+
+    <!-- 9. Inside the System Unit (bonus) -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-indigo-100 text-indigo-800">Module 9</span>
+        <span class="text-3xl">📀</span>
+      </div>
+      <h2 class="text-xl font-bold text-indigo-900">Inside the System Unit</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        What's inside the big box? Meet the CPU, motherboard, hard drive and more — simple, visual explanations.
+      </p>
+      <div class="mt-3 module-hint">🧠 Discover inner parts</div>
+    </div>
+
+    <!-- 10. Computer Care – Be Gentle! -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-pink-100 text-pink-800">Module 10</span>
+        <span class="text-3xl">🧼</span>
+      </div>
+      <h2 class="text-xl font-bold text-pink-900">Computer Care – Be Gentle!</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Learn good habits: clean hands, no drinks near the keyboard, use a soft cloth. Choose the right actions!
+      </p>
+      <div class="mt-3 module-hint">✅ Good habit vs bad habit</div>
+    </div>
+
+    <!-- 11. Extra Computer Parts -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-cyan-100 text-cyan-800">Module 11</span>
+        <span class="text-3xl">🖨️</span>
+      </div>
+      <h2 class="text-xl font-bold text-cyan-900">More Cool Parts</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Printer, webcam, headphones, USB drive — tap each to learn what they do and where we use them.
+      </p>
+      <div class="mt-3 module-hint">📚 Extra parts · tap to learn</div>
+    </div>
+
+    <!-- 12. How Computers Help Us -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-teal-100 text-teal-800">Module 12</span>
+        <span class="text-3xl">🌍</span>
+      </div>
+      <h2 class="text-xl font-bold text-teal-900">How Computers Help Us</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        We use computers to draw, write, play, watch videos and talk to people far away. See examples with big pictures.
+      </p>
+      <div class="mt-3 module-hint">🎨 Real‑life uses</div>
+    </div>
+
+    <!-- 13. Parts of a Computer – Advanced (for curious kids) -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-blue-100 text-blue-800">Module 13</span>
+        <span class="text-3xl">🔌</span>
+      </div>
+      <h2 class="text-xl font-bold text-blue-900">More Ports & Buttons</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Discover USB ports, power buttons, headphone jacks — and what happens when you press them. Safe exploration!
+      </p>
+      <div class="mt-3 module-hint">🔘 Ports & buttons</div>
+    </div>
+
+    <!-- 14. Screen Time & Breaks -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-yellow-100 text-yellow-800">Module 14</span>
+        <span class="text-3xl">⏰</span>
+      </div>
+      <h2 class="text-xl font-bold text-yellow-900">Healthy Screen Time</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Learn why we take breaks, sit up straight, and rest our eyes. Fun animations show good posture and stretching.
+      </p>
+      <div class="mt-3 module-hint">🧘 Stretch & blink</div>
+    </div>
+
+    <!-- 15. Keyboard Explorer – More Keys -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-fuchsia-100 text-fuchsia-800">Module 15</span>
+        <span class="text-3xl">🔠</span>
+      </div>
+      <h2 class="text-xl font-bold text-fuchsia-900">Keyboard Explorer</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Shift, caps lock, arrow keys — tap them and see how they change letters or move around. Beginner-friendly.
+      </p>
+      <div class="mt-3 module-hint">🔤 Special keys</div>
+    </div>
+
+    <!-- 16. Mouse Skills – Drag & Drop -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-red-100 text-red-800">Module 16</span>
+        <span class="text-3xl">🎯</span>
+      </div>
+      <h2 class="text-xl font-bold text-red-900">Mouse Skills – Drag & Drop</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Practice holding and dragging: move objects into baskets, build a puzzle — all with the mouse.
+      </p>
+      <div class="mt-3 module-hint">✋ Drag & drop practice</div>
+    </div>
+
+    <!-- 17. Computer Sounds & Music -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-emerald-100 text-emerald-800">Module 17</span>
+        <span class="text-3xl">🎵</span>
+      </div>
+      <h2 class="text-xl font-bold text-emerald-900">Computer Sounds & Music</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Listen to startup sounds, click sounds, and learn how speakers make music. Tap to play friendly sounds.
+      </p>
+      <div class="mt-3 module-hint">🔊 Tap to hear sounds</div>
+    </div>
+
+    <!-- 18. Safety First – Online & Offline -->
+    <div class="card-kid bg-white/90 p-5 flex flex-col">
+      <div class="flex items-center justify-between mb-2">
+        <span class="badge-module bg-slate-200 text-slate-800">Module 18</span>
+        <span class="text-3xl">🛡️</span>
+      </div>
+      <h2 class="text-xl font-bold text-slate-900">Safety First</h2>
+      <p class="text-gray-600 text-sm mt-1 flex-1">
+        Simple rules: ask before clicking, don't share personal info, tell a grown‑up if something feels wrong.
+      </p>
+      <div class="mt-3 module-hint">🔒 Safe choices</div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-12 mb-4 text-center text-gray-500 text-sm w-full max-w-7xl">
+    <p>🧸 Class 1 Computer Lab – every module is a new adventure. Click any card to start (coming soon)!</p>
+  </footer>
+
+  <!-- Small script to make cards feel clickable (visual only) -->
+  <script>
+    // Just add a little pointer cursor and click feedback so kids know they are interactive
+    document.querySelectorAll('.card-kid').forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => {
+        // temporary playful feedback – later this will open sub-module
+        card.style.transform = 'scale(0.98)';
+        setTimeout(() => card.style.transform = '', 120);
+      });
+    });
+  </script>
+</body>
+</html>

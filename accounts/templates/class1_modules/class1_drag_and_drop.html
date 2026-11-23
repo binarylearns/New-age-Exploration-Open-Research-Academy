@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🖥️ Build a Computer — Drag & Drop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Fredoka', sans-serif; -webkit-tap-highlight-color: transparent; }
+    h1, h2, .title-font { font-family: 'Baloo 2', cursive; }
+
+    @keyframes bgShift {
+      0%   { background-position:   0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position:   0% 50%; }
+    }
+    body {
+      background: linear-gradient(-45deg, #ffd6ec, #e7d8ff, #d8ecff, #d6f9e4, #fff5cc);
+      background-size: 400% 400%;
+      animation: bgShift 18s ease infinite;
+    }
+
+    .bubble {
+      position: fixed; border-radius: 9999px; filter: blur(2px);
+      opacity: 0.45; pointer-events: none; z-index: 0;
+      animation: bubbleFloat linear infinite;
+    }
+    @keyframes bubbleFloat {
+      0%   { transform: translateY(110vh) scale(0.6); }
+      100% { transform: translateY(-20vh) scale(1.1); }
+    }
+
+    /* Parts tray cards */
+    .part-card {
+      cursor: grab;
+      transition: transform 0.15s, box-shadow 0.15s;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .part-card:hover { transform: translateY(-4px) scale(1.03); }
+    .part-card.dragging {
+      cursor: grabbing;
+      transform: scale(1.1) rotate(-3deg);
+      box-shadow: 0 20px 40px rgba(124, 58, 237, 0.35);
+      z-index: 9999;
+      position: fixed;
+      pointer-events: none;
+    }
+    .part-card.placed {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.5);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    /* Drop slots */
+    .slot {
+      transition: transform 0.15s, border-color 0.15s, background-color 0.15s;
+    }
+    .slot.hover {
+      border-color: #a855f7 !important;
+      background-color: rgba(216, 180, 254, 0.35) !important;
+      transform: scale(1.04);
+    }
+    .slot.filled {
+      border-style: solid;
+      border-color: #22c55e !important;
+      background-color: rgba(220, 252, 231, 0.6) !important;
+    }
+    .slot.wrong-flash {
+      border-color: #ef4444 !important;
+      background-color: rgba(254, 226, 226, 0.7) !important;
+      animation: shake 0.4s;
+    }
+    .slot.pop {
+      animation: pop 0.4s ease-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25%      { transform: translateX(-6px); }
+      75%      { transform: translateX(6px); }
+    }
+    @keyframes pop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+
+    .star-slot { transition: color 0.2s, transform 0.3s; }
+    .star-slot.star-pop { animation: starPop 0.6s ease-out; }
+    @keyframes starPop {
+      0%   { transform: scale(1) rotate(0); }
+      50%  { transform: scale(1.7) rotate(180deg); }
+      100% { transform: scale(1) rotate(360deg); }
+    }
+
+    .confetti {
+      position: fixed; z-index: 9999; pointer-events: none;
+      animation: confettiFall 1.9s ease-in forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0); opacity: 1; }
+      100% { transform: translateY(-90vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden relative pb-28">
+
+  <!-- Decorative bubbles -->
+  <div class="bubble" style="width:90px;  height:90px;  left:8%;   background:#ffb6d5; animation-duration:16s; animation-delay:-2s;"></div>
+  <div class="bubble" style="width:60px;  height:60px;  left:22%;  background:#c9b8ff; animation-duration:22s; animation-delay:-8s;"></div>
+  <div class="bubble" style="width:120px; height:120px; left:45%;  background:#a5d8ff; animation-duration:20s; animation-delay:-12s;"></div>
+  <div class="bubble" style="width:70px;  height:70px;  left:65%;  background:#b6f0c9; animation-duration:18s; animation-delay:-4s;"></div>
+  <div class="bubble" style="width:100px; height:100px; left:85%;  background:#ffe08a; animation-duration:24s; animation-delay:-10s;"></div>
+
+  <!-- Header -->
+  <header class="relative z-10 flex items-center justify-between gap-3 px-4 md:px-8 py-4">
+    <a href="{% url 'class_tasks' %}"
+       class="bg-white hover:bg-purple-50 text-purple-600 font-bold py-2.5 px-4 rounded-full shadow-md flex items-center gap-2 transition border-2 border-purple-200">
+      <span class="text-xl">⬅️</span>
+      <span class="hidden sm:inline">Back</span>
+    </a>
+
+    <h1 class="title-font text-xl md:text-3xl font-extrabold text-purple-700 drop-shadow-sm whitespace-nowrap">
+      🖥️ Build a Computer
+    </h1>
+
+    <div class="flex items-center gap-2">
+      <!-- Stars -->
+      <div id="starsRow" class="bg-white rounded-full px-3 py-2 shadow-md border-2 border-yellow-200 flex items-center gap-1">
+        <span class="star-slot text-gray-300 text-lg" data-star="1">⭐</span>
+        <span class="star-slot text-gray-300 text-lg" data-star="2">⭐</span>
+        <span class="star-slot text-gray-300 text-lg" data-star="3">⭐</span>
+        <span class="star-slot text-gray-300 text-lg" data-star="4">⭐</span>
+        <span class="star-slot text-gray-300 text-lg" data-star="5">⭐</span>
+      </div>
+      <!-- Moves -->
+      <div class="bg-white rounded-full px-3 py-2 shadow-md border-2 border-blue-200 flex items-center gap-1">
+        <span class="text-sm text-blue-400 font-bold">Moves</span>
+        <span id="movesCount" class="text-lg font-extrabold text-blue-600">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Instructions -->
+  <div class="relative z-10 text-center px-4 mb-3">
+    <p id="instructions" class="inline-block bg-white/80 backdrop-blur rounded-full px-5 py-2 text-purple-700 font-bold text-sm md:text-base shadow border-2 border-purple-200">
+      👇 Drag each part to the right spot on the desk!
+    </p>
+  </div>
+
+  <!-- ===== DESK / DROP ZONES ===== -->
+  <main class="relative z-10 max-w-5xl mx-auto px-4">
+    <div id="deskArea"
+         class="relative w-full rounded-[2rem] p-6 md:p-10 bg-gradient-to-b from-amber-100 via-amber-50 to-orange-100 border-4 border-amber-300 shadow-2xl min-h-[420px] md:min-h-[480px]">
+
+      <!-- Desk surface decoration -->
+      <div class="absolute inset-x-6 bottom-4 h-3 bg-amber-700/30 rounded-full blur-sm"></div>
+
+      <!-- ── Drop slots ── -->
+      <div class="relative grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-3xl mx-auto">
+
+        <!-- Monitor slot (big, top center) -->
+        <div class="col-span-2 md:col-span-3 flex justify-center mb-2">
+          <div class="drop-slot slot relative w-full max-w-md h-40 md:h-52 rounded-3xl border-4 border-dashed border-purple-400 bg-white/60 flex flex-col items-center justify-center text-purple-400 font-bold text-sm md:text-base"
+               data-accepts="monitor">
+            <span class="text-4xl md:text-5xl mb-1 opacity-60">🖥️</span>
+            <span class="slot-label">Monitor goes here</span>
+          </div>
+        </div>
+
+        <!-- CPU slot (tall, left) -->
+        <div class="drop-slot slot relative w-full h-44 md:h-52 rounded-3xl border-4 border-dashed border-purple-400 bg-white/60 flex flex-col items-center justify-center text-purple-400 font-bold text-sm md:text-base"
+             data-accepts="cpu">
+          <span class="text-4xl md:text-5xl mb-1 opacity-60">🖲️</span>
+          <span class="slot-label">System Unit (CPU)</span>
+        </div>
+
+        <!-- Keyboard slot (wide, middle bottom) -->
+        <div class="drop-slot slot relative w-full h-44 md:h-52 rounded-3xl border-4 border-dashed border-purple-400 bg-white/60 flex flex-col items-center justify-center text-purple-400 font-bold text-sm md:text-base col-span-1"
+             data-accepts="keyboard">
+          <span class="text-4xl md:text-5xl mb-1 opacity-60">⌨️</span>
+          <span class="slot-label">Keyboard</span>
+        </div>
+
+        <!-- Mouse slot (right, small) -->
+        <div class="drop-slot slot relative w-full h-44 md:h-52 rounded-3xl border-4 border-dashed border-purple-400 bg-white/60 flex flex-col items-center justify-center text-purple-400 font-bold text-sm md:text-base"
+             data-accepts="mouse">
+          <span class="text-4xl md:text-5xl mb-1 opacity-60">🖱️</span>
+          <span class="slot-label">Mouse</span>
+        </div>
+      </div>
+
+      <!-- Completion overlay (hidden by default) -->
+      <div id="completionOverlay"
+           class="hidden absolute inset-0 bg-white/90 backdrop-blur-sm rounded-[2rem] flex flex-col items-center justify-center z-40 p-6 text-center">
+        <div class="text-7xl mb-3">🎉</div>
+        <h2 class="title-font text-3xl md:text-4xl font-extrabold text-purple-700 mb-2">You built a computer!</h2>
+        <p class="text-gray-600 mb-4">Completed in <span id="finalMoves" class="font-bold text-purple-600">0</span> moves</p>
+        <div id="finalStars" class="text-4xl mb-5"></div>
+        <button id="btnPlayAgain"
+                class="bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-extrabold py-3 px-8 rounded-full shadow-lg text-lg transition border-2 border-purple-300">
+          🔁 Play Again
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== PARTS TRAY ===== -->
+  <section class="relative z-10 max-w-5xl mx-auto px-4 mt-6">
+    <p class="text-center text-purple-700 font-bold mb-3 text-sm md:text-base">🧰 Parts Bin — drag from here</p>
+    <div id="partsTray" class="flex flex-wrap justify-center gap-3 md:gap-4 pb-4">
+      <!-- Parts are generated by JS -->
+    </div>
+  </section>
+
+  <!-- Bottom action bar -->
+  <footer class="fixed bottom-0 inset-x-0 z-20 bg-white/80 backdrop-blur-md border-t-4 border-purple-200 py-3 px-4 flex justify-center gap-3">
+    <button id="btnReset"
+            class="bg-gradient-to-br from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white font-extrabold py-3 px-8 rounded-full shadow-lg text-lg transition border-2 border-red-300">
+      🔄 Reset
+    </button>
+    <button id="btnHint"
+            class="bg-gradient-to-br from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white font-extrabold py-3 px-8 rounded-full shadow-lg text-lg transition border-2 border-yellow-300">
+      💡 Hint
+    </button>
+  </footer>
+
+  <script src="{% static 'accounts/js/class1_drag_and_drop.js' %}?v=1"></script>
+</body>
+</html>
