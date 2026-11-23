@@ -28,8 +28,20 @@ SECRET_KEY = 'django-insecure-uiai(y%=xh6@nl!sfh)v=e*g2i(_jq6h9-cr7w(f55mdrc=vq#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
+]
+
+
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 # Application definition
 
