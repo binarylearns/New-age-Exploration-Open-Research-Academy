@@ -1,5 +1,7 @@
 ## A Personal Side Project
 
+Deployed in render free version for testing with buggy code here you can check it -> https://new-age-exploration-open-research.onrender.com/
+
 New-age Exploration & Open Research Academy  (Nexora)
 
 Nexora is an independent project that I'm exploring and building in my free time and I am learning and enjoying "Vibe Coding" as well. This is cool and time saving.
